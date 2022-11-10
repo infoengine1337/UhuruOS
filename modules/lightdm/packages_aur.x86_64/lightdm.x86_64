@@ -9,6 +9,11 @@
 #
 # Display Manager
 
+<<<<<<< HEAD:modules/lightdm/packages_aur.x86_64/lightdm.x86_64
 
 #lightdm-webkit2-theme-sapphire
 
+=======
+#-- system monitor --#
+gnome-system-monitor
+>>>>>>> parent of 858e876f ([update] : Add xed text editor):modules/gtk-tools/packages.pen4/other.pen4
