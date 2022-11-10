@@ -21,6 +21,11 @@ jobs:
       options: "--privileged"
 
     steps:
+
+      - name: Create Symlink
+        run: |
+          ln -s /usr/bin /usr/sbin
+
       - uses: actions/checkout@v3
       
       - name: Fasttrack
