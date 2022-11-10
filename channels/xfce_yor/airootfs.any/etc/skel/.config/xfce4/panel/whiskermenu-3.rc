@@ -1,4 +1,8 @@
+<<<<<<< HEAD:channels/xfce_yor/airootfs.any/etc/skel/.config/xfce4/panel/whiskermenu-3.rc
 favorites=firefox.desktop,thunar.desktop,pluma.desktop,xfce4-terminal.desktop
+=======
+favorites=chromium-browser.desktop,Thunar.desktop,vlc.desktop,xfce4-terminal.desktop,medit.desktop,gimp.desktop
+>>>>>>> parent of 55f66a20 ([remove] : Remove medit from favorite list):channels/serene/airootfs.any/etc/skel/.config/xfce4/panel/whiskermenu-45.rc
 recent=
 button-title=Uhuru
 button-icon=/usr/share/icons/hicolor/96x96/apps/uhuru.png
