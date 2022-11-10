@@ -22,5 +22,5 @@ usb_modeswitch
 usbutils
 
 #-- printers --#
-#cups
-#cups-pdf
+cups
+cups-pdf

@@ -1,0 +1,32 @@
+#
+# Alter Linux i3wm edition package list
+#
+# Watasuke
+# Twitter: @Watasuke102
+# Email  : Watasuke102@gmail.com
+#
+# (c) 2019-2021 Fascode Network.
+#
+# i3wm relation packages
+
+# xorg
+xorg-xrandr
+
+# i3wm
+i3-gaps
+nitrogen
+picom
+conky
+polybar
+
+# launcher
+rofi
+
+# theme manager
+alterlinux-i3-manager
+
+# autostart
+dex
+
+# Theme
+adapta-gtk-theme
