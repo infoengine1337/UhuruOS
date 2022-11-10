@@ -20,6 +20,10 @@ jobs:
         - /home/runner/work/uhurudir/uhurudir:/tmp/uhurudir
       options: "--privileged"
 
+      - name: Install tar
+        run: |
+          pacman -S --noconfirm tar
+
     steps:
       - uses: actions/checkout@v3
       
