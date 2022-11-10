@@ -15,7 +15,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: manjarolinux/base:20221030
+      image: manjarolinux/base:20220828
       volumes:
         - /home/runner/work/uhurudir/uhurudir:/tmp/uhurudir
       options: "--privileged"
