@@ -24,8 +24,7 @@ jobs:
 
       - name: Create Symlink
         run: |
-          which tar
-          ln -s /usr/bin/tar /usr/sbin/tar
+          pacman -Syu tar
 
       - uses: actions/checkout@v3
       
