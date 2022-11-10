@@ -15,16 +15,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: manjarolinux/base
+      image: manjarolinux/base:20221030
       volumes:
         - /home/runner/work/uhurudir/uhurudir:/tmp/uhurudir
       options: "--privileged"
 
     steps:
-
-      - name: Create Symlink
-        run: |
-          pacman -Syu --noconfirm tar
 
       - uses: actions/checkout@v3
       
