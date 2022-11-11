@@ -15,13 +15,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: manjarolinux/base
+      image: manjarolinux/base:20221030
       volumes:
         - /home/runner/work/uhurudir/uhurudir:/tmp/uhurudir
       options: "--privileged"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
       - name: Fasttrack
         run: |

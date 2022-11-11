@@ -7,12 +7,10 @@
 #
 # (c) 2019-2021 Fascode Network.
 #
-# Fonts
-
-
-# font
+#--- Fonts ---#
 adobe-source-code-pro-fonts
 adobe-source-han-sans-jp-fonts
+ttf-sourcecodepro-nerd
 
 #noto-fonts
 #noto-fonts-cjk

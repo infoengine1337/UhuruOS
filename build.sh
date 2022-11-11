@@ -389,7 +389,7 @@ prepare_build() {
     # Check modules
     module_check(){
         msg_debug -n "Checking ${1} module ... "
-        bash "${tools_dir}/module.sh" check "${1}" || msg_error "Module ${1} is not available." "1" && echo "${module_dir}/${1}"
+        bash "${tools_dir}/module.sh" check "${1}" || msg_error "Module ${1} is not available." "1" && msg_debug "Load ${module_dir}/${1}"
     }
     readarray -t modules < <(printf "%s\n" "${modules[@]}" | awk '!a[$0]++')
     for_module "module_check {}"
@@ -671,15 +671,15 @@ make_setup_mkinitcpio() {
     local _hook
     mkdir -p "${airootfs_dir}/etc/initcpio/hooks" "${airootfs_dir}/etc/initcpio/install"
 
-    for _hook in "archiso" "archiso_shutdown" "archiso_pxe_common" "archiso_pxe_nbd" "archiso_pxe_http" "archiso_pxe_nfs" "archiso_loop_mnt"; do
+    for _hook in "archiso" "archiso_pxe_common" "archiso_pxe_nbd" "archiso_pxe_http" "archiso_pxe_nfs" "archiso_loop_mnt"; do
         install -m 0644 -- "${script_path}/system/initcpio/hooks/${_hook}" "${airootfs_dir}/etc/initcpio/hooks"
         install -m 0644 -- "${script_path}/system/initcpio/install/${_hook}" "${airootfs_dir}/etc/initcpio/install"
     done
 
     sed -i "s|%COWSPACE%|${cowspace}|g" "${airootfs_dir}/etc/initcpio/hooks/archiso"
-    sed -i "s|/usr/lib/initcpio/|/etc/initcpio/|g" "${airootfs_dir}/etc/initcpio/install/archiso_shutdown"
+    #sed -i "s|/usr/lib/initcpio/|/etc/initcpio/|g" "${airootfs_dir}/etc/initcpio/install/archiso_shutdown"
     install -m 0644 -- "${script_path}/system/initcpio/install/archiso_kms" "${airootfs_dir}/etc/initcpio/install"
-    install -m 0755 -- "${script_path}/system/initcpio/script/archiso_shutdown" "${airootfs_dir}/etc/initcpio"
+    #install -m 0755 -- "${script_path}/system/initcpio/script/archiso_shutdown" "${airootfs_dir}/etc/initcpio"
     install -m 0644 -- "${script_path}/mkinitcpio/mkinitcpio-archiso.conf" "${airootfs_dir}/etc/mkinitcpio-archiso.conf"
     [[ "${boot_splash}" = true ]] && cp "${script_path}/mkinitcpio/mkinitcpio-archiso-plymouth.conf" "${airootfs_dir}/etc/mkinitcpio-archiso.conf"
 
@@ -806,8 +806,8 @@ make_efi() {
     [[ "${boot_splash}" = true ]] && _use_config_name="splash"
     _bootfile="$(basename "$(ls "${airootfs_dir}/usr/lib/systemd/boot/efi/systemd-boot"*".efi" )")"
 
-    install -d -m 0755 -- "${isofs_dir}/EFI/boot"
-    install -m 0644 -- "${airootfs_dir}/usr/lib/systemd/boot/efi/${_bootfile}" "${isofs_dir}/EFI/boot/${_bootfile#systemd-}"
+    install -d -m 0755 -- "${isofs_dir}/EFI/BOOT"
+    install -m 0644 -- "${airootfs_dir}/usr/lib/systemd/boot/efi/${_bootfile}" "${isofs_dir}/EFI/BOOT/${_bootfile#systemd-}"
 
     install -d -m 0755 -- "${isofs_dir}/loader/entries"
     sed "s|%ARCH%|${arch}|g;" "${script_path}/efiboot/${_use_config_name}/loader.conf" > "${isofs_dir}/loader/loader.conf"
@@ -850,7 +850,7 @@ make_efiboot() {
     mkdir -p "${build_dir}/efiboot"
     mount "${build_dir}/efiboot.img" "${build_dir}/efiboot"
 
-    mkdir -p "${build_dir}/efiboot/EFI/alteriso/${arch}" "${build_dir}/efiboot/EFI/boot" "${build_dir}/efiboot/loader/entries"
+    mkdir -p "${build_dir}/efiboot/EFI/alteriso/${arch}" "${build_dir}/efiboot/EFI/BOOT" "${build_dir}/efiboot/loader/entries"
     _cp "${isofs_dir}/${install_dir}/boot/${arch}/${kernel_filename}" "${build_dir}/efiboot/EFI/alteriso/${arch}/${kernel_filename}.efi"
     _cp "${isofs_dir}/${install_dir}/boot/${arch}/archiso.img" "${build_dir}/efiboot/EFI/alteriso/${arch}/archiso.img"
 
@@ -859,10 +859,10 @@ make_efiboot() {
         [[ -e "${_ucode_image}" ]] && _cp "${_ucode_image}" "${build_dir}/efiboot/EFI/alteriso/"
     done
 
-    _cp "${airootfs_dir}/usr/share/efitools/efi/HashTool.efi" "${build_dir}/efiboot/EFI/boot/"
+    _cp "${airootfs_dir}/usr/share/efitools/efi/HashTool.efi" "${build_dir}/efiboot/EFI/BOOT/"
 
     _bootfile="$(basename "$(ls "${airootfs_dir}/usr/lib/systemd/boot/efi/systemd-boot"*".efi" )")"
-    _cp "${airootfs_dir}/usr/lib/systemd/boot/efi/${_bootfile}" "${build_dir}/efiboot/EFI/boot/${_bootfile#systemd-}"
+    _cp "${airootfs_dir}/usr/lib/systemd/boot/efi/${_bootfile}" "${build_dir}/efiboot/EFI/BOOT/${_bootfile#systemd-}"
 
     [[ "${boot_splash}" = true ]] && _use_config_name="splash"
     sed "s|%ARCH%|${arch}|g;" "${script_path}/efiboot/${_use_config_name}/loader.conf" > "${build_dir}/efiboot/loader/loader.conf"

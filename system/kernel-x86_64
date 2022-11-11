@@ -41,5 +41,5 @@ lts419                       vmlinuz-linux-lts419            linux-lts419
 lts44                        vmlinuz-linux-lts44             linux-lts44
 
 # Manjaro kernels
-linux518                    vmlinuz-5.18-x86_64             linux518
+linux519                    vmlinuz-5.19-x86_64             linux519
 
