@@ -79,7 +79,6 @@ user_check () {
 installpkg(){
     yes | sudo -u "${aur_username}" \
         "${aur_helper_command}" -S \
-            --color always \
             --cachedir "/var/cache/pacman/pkg/" \
             "${pacman_args[@]}" \
             "${aur_helper_args[@]}" \
