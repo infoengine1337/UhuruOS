@@ -27,10 +27,11 @@ jobs:
 
       - name: Populate Manjaro keyrings
         run: |
+          pacman -S manjaro-keyring
           pacman-key --init
           pacman-key --populate manjaro
 
-      - name: Update
+      - name: Update manjaro mirrorlist
         run: |
           cp ./system/manjaro-mirrorlist.txt /etc/pacman.d/mirrorlist
 
