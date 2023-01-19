@@ -23,12 +23,16 @@ jobs:
     steps:
 
       - uses: actions/checkout@v3
-      
-      - name: Update mirrorlist
+
+
+      - name: Populate Manjaro keyrings
         run: |
-          cat ./system/manjaro-mirrorlist.txt
+          pacman-key --init
+          pacman-key --populate manjaro
+
+      - name: Update
+        run: |
           cp ./system/manjaro-mirrorlist.txt /etc/pacman.d/mirrorlist
-          cat /etc/pacman.d/mirrorlist
 
       - name: Install Required Packages
         run: |
@@ -40,10 +44,9 @@ jobs:
           pacman --noconfirm -U blackarch-keyring.pkg.tar.xz
           wget -P /etc/pacman.d/ https://blackarch.org/blackarch-mirrorlist
 
-      - name: Populate keyrings
+      - name: Populate BlackArch keyrings
         run: |
-          pacman-key --init
-          pacman-key --populate manjaro blackarch
+          pacman-key --populate blackarch
 
       - name: Build UhuruOS minimal xfce edition
         run: ./build.sh -c zstd --noloopmod --noconfirm --cleanup xfce
