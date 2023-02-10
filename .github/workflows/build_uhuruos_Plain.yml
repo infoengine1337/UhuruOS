@@ -30,7 +30,7 @@ jobs:
 
       - name: Install Required Packages
         run: |
-          pacman -Syyu --noconfirm glibc nss zsh wget git make sudo python3 base-devel cmake ninja qt5-base arch-install-scripts pyalpm squashfs-tools libisoburn dosfstools   
+          pacman -Syyu --noconfirm zsh wget git make sudo python3 base-devel cmake ninja qt5-base arch-install-scripts pyalpm squashfs-tools libisoburn dosfstools   
 
       - name: Install BlackArch keys and Fetch blackarch-mirrorlist
         run: |
