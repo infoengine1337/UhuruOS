@@ -534,6 +534,8 @@ make_packages_repo() {
 
     # Install packages on airootfs
     _pacstrap "${_pkglist_install[@]}"
+    
+    chroot_run "ldconfig"
 
     return 0
 }
