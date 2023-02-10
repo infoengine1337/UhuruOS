@@ -18,7 +18,5 @@ amd-ucode
 mkinitcpio-nfs-utils
 nbd
 vi
-glibc
-nss
 
 edk2-shell
