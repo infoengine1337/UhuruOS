@@ -7,7 +7,7 @@
 ##
 
 ## Country : United_Kingdom
-Server = http://repo.manjaro.org.uk/stable/$repo/$arch
+## Server = http://repo.manjaro.org.uk/stable/$repo/$arch
 
 ## Country : United_Kingdom
 Server = http://manjaro.mirrors.uk2.net/stable/$repo/$arch
