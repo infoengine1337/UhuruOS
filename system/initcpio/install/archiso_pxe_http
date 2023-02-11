@@ -7,7 +7,7 @@ build() {
 
     add_binary curl
 
-    add_file "$(readlink -f /etc/ssl/certs/ca-certificates.crt)" /etc/ssl/certs/ca-certificates.crt
+    add_file /etc/ssl/certs/ca-certificates.crt
 }
 
 help() {
