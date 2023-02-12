@@ -24,15 +24,15 @@ jobs:
 
       - uses: actions/checkout@v3
       
-      - name: Fasttrack
+      - name: Update Mirrorlist
         run: |
-          pacman-mirrors --fasttrack
+          cp ./system/manjaro-mirrorlist.txt /etc/pacman.d/mirrorlist
 
       - name: Install Required Packages
         run: |
           pacman -Syyu --noconfirm zsh wget git make sudo python3 base-devel cmake ninja qt5-base arch-install-scripts pyalpm squashfs-tools libisoburn dosfstools   
 
-      - name: Install BlackArch keys and Fetch blackarc-mirrorlist
+      - name: Install BlackArch keys and Fetch blackarch-mirrorlist
         run: |
           wget https://www.blackarch.org/keyring/blackarch-keyring.pkg.tar.xz && \
           pacman --noconfirm -U blackarch-keyring.pkg.tar.xz
