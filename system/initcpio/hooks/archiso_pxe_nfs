@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/usr/bin/ash
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -27,7 +27,7 @@ archiso_nfs_mount_handler() {
         nfsmount "${archiso_nfs_srv}" "/run/archiso/bootmnt"
         mount_status=$?
     fi
-    if [ $mount_status -gt 0 ]; then
+    if [ "$mount_status" -gt 0 ]; then
         echo "ERROR: Mounting '${archiso_nfs_srv}'"
         echo "   Falling back to interactive prompt"
         echo "   You can try to fix the problem manually, log out when you are finished"

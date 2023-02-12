@@ -14,7 +14,7 @@
 #fi
 #[[ -f /usr/share/backgrounds/arch-logo-dark/ALDark1.png ]] && chmod 644 /usr/share/backgrounds/arch-logo-dark/ALDark1.png
 
-VERSION_WHO='16.0.5.3'
+VERSION_WHO='16.0.9.0'
 
 # Replace right menu
 if [[ "${language}" = "ja" ]]; then
@@ -39,5 +39,5 @@ su $username -c "rm /home/$username/tmp.ova"
 
 # Change Theme
 
-#sed -i -E 's@(^    <property name="theme" type="string" value=").*("/>$)@\1Midnight-BlueNight\2@g' "/home/${username}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
-#sed -i -E 's@(^    <property name="ThemeName" type="string" value=").*("/>$)@\1Midnight-BlueNight\2@g' "/home/${username}/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml"
+#sed -i -E 's@(^    <property name="theme" type="string" value=").*("/>$)@\1Midnight-Night\2@g' "/home/${username}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
+#sed -i -E 's@(^    <property name="ThemeName" type="string" value=").*("/>$)@\1Midnight-Night\2@g' "/home/${username}/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml"

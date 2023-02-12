@@ -1,0 +1,50 @@
+##
+## Manjaro Linux default mirrorlist
+## Generated on 2022-11-11 21:40
+##
+## Please use 'pacman-mirrors -f [NUMBER] [NUMBER]' to modify mirrorlist
+## (Use 0 for all mirrors)
+##
+
+## Country : United_Kingdom
+Server = http://manjaro.mirrors.uk2.net/stable/$repo/$arch
+
+## Country : Germany
+Server = https://manjaro.moson.eu/stable/$repo/$arch
+
+## Country : Denmark
+Server = https://mirrors.dotsrc.org/manjaro/stable/$repo/$arch
+
+## Country : Netherlands
+Server = https://mirror.koddos.net/manjaro/stable/$repo/$arch
+
+## Country : Japan
+Server = http://ftp.tsukuba.wide.ad.jp/Linux/manjaro/stable/$repo/$arch
+
+## Country : Sweden
+Server = https://ftp.lysator.liu.se/pub/manjaro/stable/$repo/$arch
+
+## Country : Netherlands
+Server = https://ftp.nluug.nl/pub/os/Linux/distr/manjaro/stable/$repo/$arch
+
+## Country : Japan
+Server = http://ftp.riken.jp/Linux/manjaro/stable/$repo/$arch
+
+## Country : Singapore
+Server = https://download.nus.edu.sg/mirror/manjaro/stable/$repo/$arch
+
+## Country : Russia
+Server = http://mirror.truenetwork.ru/manjaro/stable/$repo/$arch
+
+## Country : Taiwan
+Server = http://free.nchc.org.tw/manjaro/stable/$repo/$arch
+
+## Country : Greece
+Server = https://ftp.cc.uoc.gr/mirrors/linux/manjaro/stable/$repo/$arch
+
+## Country : Russia
+Server = https://mirror.yandex.ru/mirrors/manjaro/stable/$repo/$arch
+
+## Country : Brazil
+Server = http://linorg.usp.br/manjaro/stable/$repo/$arch
+

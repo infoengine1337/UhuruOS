@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/usr/bin/ash
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -62,6 +62,11 @@ archiso_pxe_http_mount_handler() {
     # defined via initcpio's parse_cmdline()
     if [ "${verify}" = "y" ]; then
         _curl_get "${archiso_http_srv}${archisobasedir}/${arch}/airootfs.${img_type}.sig" "/${arch}"
+    fi
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if [ "${cms_verify}" = "y" ]; then
+        _curl_get "${archiso_http_srv}${archisobasedir}/${arch}/airootfs.${img_type}.cms.sig" "/${arch}"
     fi
 
     mount --mkdir -o bind /run/archiso/httpspace /run/archiso/bootmnt

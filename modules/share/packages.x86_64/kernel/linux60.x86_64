@@ -8,10 +8,7 @@
 # (c) 2019-2021 Fascode Network.
 #
 
-#-- system monitor --#
-# cpu-x
+linux60
+linux60-headers
 
-#-- other --#
-#ipad_charge-git
-#snapd
-tlpui
+broadcom-wl-dkms
