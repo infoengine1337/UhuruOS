@@ -7,7 +7,7 @@ build() {
 
     add_runscript
 
-    add_binary /usr/lib/initcpio/nfsmount /bin/nfsmount
+    add_binary /usr/lib/initcpio/nfsmount /usr/bin/nfsmount
 }
 
 help() {

@@ -678,7 +678,7 @@ make_setup_mkinitcpio() {
 
     sed -i "s|%COWSPACE%|${cowspace}|g" "${airootfs_dir}/etc/initcpio/hooks/archiso"
     #sed -i "s|/usr/lib/initcpio/|/etc/initcpio/|g" "${airootfs_dir}/etc/initcpio/install/archiso_shutdown"
-    install -m 0644 -- "${script_path}/system/initcpio/install/archiso_kms" "${airootfs_dir}/etc/initcpio/install"
+    #install -m 0644 -- "${script_path}/system/initcpio/install/archiso_kms" "${airootfs_dir}/etc/initcpio/install"
     #install -m 0755 -- "${script_path}/system/initcpio/script/archiso_shutdown" "${airootfs_dir}/etc/initcpio"
     install -m 0644 -- "${script_path}/mkinitcpio/mkinitcpio-archiso.conf" "${airootfs_dir}/etc/mkinitcpio-archiso.conf"
     [[ "${boot_splash}" = true ]] && cp "${script_path}/mkinitcpio/mkinitcpio-archiso-plymouth.conf" "${airootfs_dir}/etc/mkinitcpio-archiso.conf"
