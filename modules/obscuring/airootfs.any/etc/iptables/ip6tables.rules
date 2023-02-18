@@ -1,23 +1,6 @@
 *filter
 :INPUT DROP [0:0]
 :FORWARD DROP [0:0]
-:OUTPUT DROP [2:187]
--A INPUT -i lo -j ACCEPT
--A INPUT -m state --state ESTABLISHED -j ACCEPT
--A OUTPUT -o lo -j ACCEPT
--A OUTPUT -m state --state ESTABLISHED -j ACCEPT
--A OUTPUT -p tcp -m owner --uid-owner "tor" -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -j ACCEPT
--A OUTPUT -d 127.0.0.1/32 -p tcp -m tcp --dport 9040 --tcp-flags FIN,SYN,RST,ACK SYN -j ACCEPT
-COMMIT
-
-*nat
-:PREROUTING ACCEPT [0:0]
-:INPUT ACCEPT [0:0]
-:OUTPUT ACCEPT [180:11939]
-:POSTROUTING ACCEPT [142:8805]
--A OUTPUT -o lo -j RETURN
--A OUTPUT -m owner --uid-owner "tor" -j RETURN
--A OUTPUT -p udp -m udp --dport 53 -j REDIRECT --to-ports 5353
--A OUTPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -j REDIRECT --to-ports 9040
+:OUTPUT DROP [0:0]
 COMMIT
 
