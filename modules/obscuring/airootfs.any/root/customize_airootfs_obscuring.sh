@@ -5,7 +5,7 @@
 # Twitter: @infoengine1337
 
 _safe_systemctl mask systemd-timesyncd.service
-_safe_systemctl enable iptables.service macspoof.service NetworkManager.service dnsmasq.service secure-time-sync.service kloak.service
+_safe_systemctl enable iptables.service ip6tables.service macspoof.service NetworkManager.service dnsmasq.service secure-time-sync.service kloak.service
 #_safe_systemctl mask tor.service
 
 # Tor Initializer
