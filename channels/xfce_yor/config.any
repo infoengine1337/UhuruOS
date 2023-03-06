@@ -22,4 +22,5 @@ modules=(
     "cli-modules"
     "lightdm-modules"
     "gtk-modules"
+    "pentest"
 )
