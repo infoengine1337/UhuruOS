@@ -69,7 +69,7 @@ jobs:
 
       - name: Upload to anonfiles
         id: uploadiso
-        run: echo "::set-output name=url::Please Download ISO from releases or $(curl -s --retry 3 -F file=@`echo UhuruOS-*-x86_64.iso` https://api.anonfiles.com/upload | jq .data.file.url.short )"
+        run: echo "::set-output name=url::Please Download ISO from Github Actions Artifacts or $(curl -s --retry 3 -F file=@`echo UhuruOS-*-x86_64.iso` https://api.anonfiles.com/upload | jq .data.file.url.short )"
 
       - name: Create release
         uses: softprops/action-gh-release@v1
