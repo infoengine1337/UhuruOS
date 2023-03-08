@@ -23,4 +23,5 @@ modules=(
     "lightdm-modules"
     "gtk-modules"
     "obscuring"
+    "pentest"
 )

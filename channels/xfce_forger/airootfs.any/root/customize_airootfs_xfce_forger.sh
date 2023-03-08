@@ -37,14 +37,3 @@ fi
 _safe_systemctl enable zeronet.service
 chmod +x /usr/lib/start-zeronet
 usermod -aG tor zeronet
-
-# WPScan Update
-wpscan --update
-
-# Application categorize
-bash -c 'sudo pacman -Sl blackarch | grep installed | cut -d " " -f 2' | /etc/pacman.d/scripts/ba-gen-desktop.sh gen
-
-# download seclists wordlists
-su $username -c "mkdir /home/$username/seclists-wordlist"
-su $username -c \
-    "wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/big.txt https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/common.txt https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/raft-large-directories.txt https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/raft-large-files.txt -P /home/$username/seclists-wordlist"

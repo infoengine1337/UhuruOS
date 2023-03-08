@@ -27,17 +27,6 @@ else
     remove "/home/${username}/.config/Thunar/uca.xml.jp"
 fi
 
-# WPScan Update
-wpscan --update
-
-# Application categorize
-bash -c 'sudo pacman -Sl blackarch | grep installed | cut -d " " -f 2' | /etc/pacman.d/scripts/ba-gen-desktop.sh gen
-
-# download seclists wordlists
-su $username -c "mkdir ~/seclists-wordlist"
-su $username -c \
-    "wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/big.txt https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/common.txt https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/raft-large-directories.txt https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/raft-large-files.txt -P ~/seclists-wordlist"
-
 # Change Theme
 
 #sed -i -E 's@(^    <property name="theme" type="string" value=").*("/>$)@\1Midnight-Night\2@g' "/home/${username}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
