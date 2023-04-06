@@ -1,0 +1,14 @@
+#
+# UhuruOS package list
+#
+# infoengine1337
+# github : infoengine1337
+#
+# (c) 1998-2140 Fascode Network.
+#
+
+linux-cachyos
+linux-cachyos-headers
+
+broadcom-wl-dkms
+

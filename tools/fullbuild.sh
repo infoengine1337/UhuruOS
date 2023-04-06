@@ -1,27 +1,30 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 script_path="$( cd -P "$( dirname "$(readlink -f "$0")" )" && cd .. && pwd )"
 
 channels=(
 ##  Current official channel
     "xfce"
+    "xfce_yor"
+    "xfce_anya"
+    "xfce_forger"
+    "xfce_loid"
     "i3"
     "plasma"
+    "madeleine"
 
 ## Scheduled to discontinue distribution
     "lxde"
     "cinnamon"
 
 ## They are unstable channel
-#   "xfce-pro"
-#   "gnome"
-#   "serene"
+    "gnome"
 )
 
-architectures=("x86_64" "i686")
+architectures=("x86_64")
 locale_list=("ja" "en")
 share_options=()
-default_options=("--boot-splash" "--user" "alter" "--password" "alter" "--log")
+default_options=("--boot-splash" "--user" "uhurulive" "--password" "uhurulive" "--log")
 failed=()
 abort=false
 
@@ -75,7 +78,7 @@ trap_exit() {
 build() {
     local _exit_code=0 _options=("${share_options[@]}")
 
-    _options+=("--arch" "${arch}" "--lang" "${lang}" "--out" "${out_dir}/${cha}/${lang}" "${cha}")
+    _options+=("--arch" "${arch}" "--lang" "${lang}" "--out" "${out_dir}/${cha}/${lang}" "${cha}" "--noloopmod" "--noconfirm" "--cleanup")
 
     if [[ "${simulation}" = false ]] && [[ "${remove_cache}" = true ]]; then
         msg_info "Removing package cache for ${arch}"

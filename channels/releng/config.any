@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 # config
 #
@@ -45,7 +45,7 @@ sfs_comp_opt=()
 locale_name="en"
 
 # Set the user's default shell.
-usershell="/bin/zsh"
+usershell="/bin/bash"
 
 # Do not install the AUR package.
 # This setting cannot be changed by an argument.
@@ -65,7 +65,7 @@ defaultkernel="core"
 # This setting cannot be changed by an argument.
 norescue_entry=true
 
-# If set to true, include alteriso_info in iso root.
+# If set to true, include uhurulive_info in iso root.
 # This setting cannot be changed by an argument.
 include_info=false
 
@@ -76,7 +76,7 @@ nochname=true
 # List of packages required for build
 # The following packages are checked to see if they are installed before running build.sh
 # Also, wizard.sh will install it automatically.
-readarray -t dependence < <(printf "%s\n" "${dependence[@]}" | grep -xv "alterlinux-keyring")
+readarray -t dependence < <(printf "%s\n" "${dependence[@]}" | grep -xv "uhurulinux-keyring")
 
 # Modules to include
 # An array of module directory names to include.

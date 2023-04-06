@@ -1,7 +1,7 @@
 FROM manjarolinux/base:latest AS build-stage
 
 RUN pacman -Syyu --noconfirm \
-        zsh wget git make sudo python3 \
+        dash wget git make sudo python3 \
         base-devel cmake ninja qt5-base \
         arch-install-scripts pyalpm squashfs-tools libisoburn dosfstools
 

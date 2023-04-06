@@ -1,0 +1,44 @@
+#!/usr/bin/ash
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+run_hook() {
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if [ -n "${ip}" ] && [ -n "${uhurulive_nfs_srv}" ]; then
+
+        uhurulive_nfs_srv=$(eval echo "${uhurulive_nfs_srv}")
+
+        export mount_handler="uhurulive_nfs_mount_handler"
+    fi
+}
+
+uhurulive_nfs_mount_handler() {
+    local mount_status
+    newroot="${1}"
+    mkdir -p "/run/uhurulive/bootmnt"
+    msg ":: Mounting '${uhurulive_nfs_srv}'"
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if [ -n "${uhurulive_nfs_opt}" ]; then
+        nfsmount -o "${uhurulive_nfs_opt}" "${uhurulive_nfs_srv}" "/run/uhurulive/bootmnt"
+        mount_status=$?
+    else
+        nfsmount "${uhurulive_nfs_srv}" "/run/uhurulive/bootmnt"
+        mount_status=$?
+    fi
+    if [ "$mount_status" -gt 0 ]; then
+        echo "ERROR: Mounting '${uhurulive_nfs_srv}'"
+        echo "   Falling back to interactive prompt"
+        echo "   You can try to fix the problem manually, log out when you are finished"
+        launch_interactive_shell
+    fi
+
+    if [ "${copytoram}" != "n" ]; then
+        copytoram="y"
+    fi
+
+    uhurulive_mount_handler "${newroot}"
+}
+
+# vim: set ft=sh:

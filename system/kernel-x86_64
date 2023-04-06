@@ -1,22 +1,27 @@
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# UhuruOS package list
 #
-# (c) 2019-2021 Fascode Network.
+# infoengine1337
+# github : infoengine1337
+#
+# (c) 1998-2140 Fascode Network.
 #
 #
-# kernel list for i686
+# kernel list for x86_64
 #
 # Enter the kernel package and header package name in the kernel package list.
 #
 #[kernel name]               [kernel filename]               [mkinitcpio profile]
 #
-
 core                         vmlinuz-linux                   linux
-lts                          vmlinuz-linux-lts               linux-lts
+lqx                          vmlinuz-linux-lqx               linux-lqx
 zen                          vmlinuz-linux-zen               linux-zen
+xanmod                       vmlinuz-linux-xanmod            linux-xanmod
+
+# Arch Linux Official repository
 hardened                     vmlinuz-linux-hardened          linux-hardened
+cachyos-server               vmlinuz-linux-cachyos-server    linux-cachyos-server
+cachyos                      vmlinuz-linux-cachyos           linux-cachyos
 
 
 # Arch Linux Trusted User repository
@@ -24,24 +29,9 @@ rt                           vmlinuz-linux-rt                linux-rt
 rt-lts                       vmlinuz-linux-rt-lts            linux-rt-lts
 
 
-# AUR Unofficial kernels
-lqx                          vmlinuz-linux-lqx               linux-lqx
-ck                           vmlinuz-linux-ck                linux-ck
-xanmod                       vmlinuz-linux-xanmod            linux-xanmod
-xanmod-lts                   vmlinuz-linux-xanmod-lts        linux-xanmod-lts
-
-
-# Alter Linux original packages
-zen-letsnote                 vmlinuz-linux-zen-letsnote      linux-zen-letsnote
-
-
-# Old version kernels (You have to compile the kernel from yay)
-lts414                       vmlinuz-linux-lts414            linux-lts414
-lts419                       vmlinuz-linux-lts419            linux-lts419
-lts44                        vmlinuz-linux-lts44             linux-lts44
-
 # Manjaro kernels
-linux519                    vmlinuz-5.19-x86_64             linux519
-linux60                    vmlinuz-6.0-x86_64             linux60
-linux61                    vmlinuz-6.1-x86_64             linux61
+linux515                     vmlinuz-5.15-x86_64             linux515
+linux518                     vmlinuz-5.18-x86_64             linux518
+linux62                      vmlinuz-6.2-x86_64              linux62
+linux63                      vmlinuz-6.3-x86_64              linux63
 

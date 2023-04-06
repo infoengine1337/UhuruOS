@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# watasuke
+# Known As: @Watasuke102
+# Email  : watasuke102@gmail.com
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# config
+#
+# Overwrites the first to read and set the build script
+# This configuration file follows the bash syntax.
+#
+
+# Set the user's default shell.
+usershell="/bin/bash"
+
+# Modules to include
+# An array of module directory names to include.
+# This setting cannot be changed by an argument.
+modules=(
+    "cli-modules"
+    "lightdm-modules"
+    "gtk-modules"
+)

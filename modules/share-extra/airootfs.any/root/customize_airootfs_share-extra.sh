@@ -1,22 +1,18 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
+
+chattr +i /etc/resolv.conf
 
 # Bluetooth
-#rfkill unblock all
-#_safe_systemctl enable bluetooth
-
-# Snap
-#_safe_systemctl enable snapd.apparmor.service
-#_safe_systemctl enable apparmor.service
-#_safe_systemctl enable snapd.socket
-#_safe_systemctl enable snapd.service
-#_safe_systemctl enable ufw.service
+rfkill unblock all
+_safe_systemctl enable bluetooth
+_safe_systemctl enable ufw.service
 
 
 # Added autologin group to auto login

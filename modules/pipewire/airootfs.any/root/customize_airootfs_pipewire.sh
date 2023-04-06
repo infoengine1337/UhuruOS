@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Pipewire
 # Do not use _safe_systemctl because pipewire services are not system but user

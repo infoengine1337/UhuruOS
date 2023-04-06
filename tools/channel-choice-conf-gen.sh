@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 script_path="$( cd -P "$( dirname "$(readlink -f "$0")" )" && cd .. && pwd )"
 arch_list=(

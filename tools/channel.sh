@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 set -e
 
@@ -10,7 +10,7 @@ opt_nobuiltin=false
 opt_fullpath=false
 opt_nocheck=false
 opt_line=false
-alteriso_version="3.1"
+uhurulive_version="3.1"
 mode=""
 arch="all"
 kernel="all"
@@ -51,7 +51,7 @@ _help() {
 gen_channel_list() {
     local _dirname
     for _dirname in $(ls -l "${script_path}"/channels/ | awk '$1 ~ /d/ {print $9}'); do
-        if [[ -n $(ls "${script_path}"/channels/${_dirname}) ]] && check_alteriso_version "${_dirname}/" || [[ "${opt_nochkver}" = true ]]; then
+        if [[ -n $(ls "${script_path}"/channels/${_dirname}) ]] && check_uhurulive_version "${_dirname}/" || [[ "${opt_nochkver}" = true ]]; then
             if [[  ! "${arch}" = "all" ]] && [[ -z "$(cat "${script_path}/channels/${_dirname}/architecture" 2> /dev/null | grep -h -v ^'#' | grep -x "${arch}")" ]]; then
                 continue
             elif [[ ! "${kernel}" = "all" ]] && [[ -f "${channel_dir}/kernel_list-${arch}" ]] && [[ -z $( ( cat "${script_path}/channels/${_dirname}/kernel_list-${arch}" | grep -h -v ^'#' | grep -x "${kernel}" ) 2> /dev/null) ]]; then
@@ -83,8 +83,8 @@ gen_channel_list() {
     fi
 }
 
-# check?alteriso_version <channel dir>
-get_alteriso_version(){
+# check?uhurulive_version <channel dir>
+get_uhurulive_version(){
     local _channel
     if [[ ! -d "${script_path}/channels/${1}" ]]; then
         _channel="${script_path}/channels/${1}.add"
@@ -95,21 +95,21 @@ get_alteriso_version(){
         echo "${1} was not found." >&2
         exit 1
     fi
-    if [[ ! -f "${_channel}/alteriso" ]]; then
+    if [[ ! -f "${_channel}/uhurulive" ]]; then
         if (( $(find ./ -maxdepth 1 -mindepth 1 -name "*.x86_64" -o -name ".i686" -o -name "*.any" 2> /dev/null | wc -l) == 0 )); then
             echo "2.0"
         fi
     else
         echo "$(
-            source "${_channel}/alteriso"
-            echo "${alteriso}"
+            source "${_channel}/uhurulive"
+            echo "${uhurulive}"
         )"
     fi
 }
 
-check_alteriso_version(){
-    #if [[ "$(get_alteriso_version "${1%.add}")" = "${alteriso_version}" ]]; then
-    if [[ "$(get_alteriso_version "${1%.add}" | cut -d "." -f 1)" = "$(echo "${alteriso_version}" | cut -d "." -f 1)" ]]; then
+check_uhurulive_version(){
+    #if [[ "$(get_uhurulive_version "${1%.add}")" = "${uhurulive_version}" ]]; then
+    if [[ "$(get_uhurulive_version "${1%.add}" | cut -d "." -f 1)" = "$(echo "${uhurulive_version}" | cut -d "." -f 1)" ]]; then
         return 0
     else
         return 1
@@ -129,7 +129,7 @@ check() {
         exit 0
     elif [[ -d "${1}" ]] && [[ -n $(ls "${1}") ]]; then
         _channel_name="$(basename "${1%/}")"
-        if check_alteriso_version "${_channel_name}" || [[ "${opt_nochkver}" = true ]]; then
+        if check_uhurulive_version "${_channel_name}" || [[ "${opt_nochkver}" = true ]]; then
             #echo "directory"
             exit 1
         else
@@ -157,7 +157,7 @@ desc() {
     else
         _channel="${1}"
     fi
-    if ! check_alteriso_version "${_channel}" && [[ "${opt_nochkver}" = false ]]; then
+    if ! check_uhurulive_version "${_channel}" && [[ "${opt_nochkver}" = false ]]; then
         "${script_path}/tools/msg.sh" --noadjust -l 'ERROR:' --noappname error "Not compatible with AlterISO3"
     elif [[ -f "${script_path}/channels/${_channel}/description.txt" ]]; then
         echo -ne "$(cat "${script_path}/channels/${_channel}/description.txt")\n"
@@ -218,7 +218,7 @@ while true; do
             shift 1
             ;;
         -v | --version)
-            alteriso_version="${2}"
+            uhurulive_version="${2}"
             shift 2
             ;;
         -h | --help)
@@ -253,7 +253,7 @@ case "${mode}" in
     "check" ) check "${@}"                ;;
     "show"  ) show                        ;;
     "desc"  ) desc "${@}"                 ;;
-    "ver"   ) get_alteriso_version "${@}" ;;
+    "ver"   ) get_uhurulive_version "${@}" ;;
     "help"  ) _help; exit 0               ;;
     *       ) _help; exit 1               ;;
 esac

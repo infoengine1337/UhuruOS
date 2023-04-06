@@ -1,0 +1,22 @@
+ {
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "development@noreply",
+                "Name": "team-silencesuzuka"
+            }
+        ],
+        "Description": "infoengine1337 UhuruOS Default Theme",
+        "Id": "net.fascode.uhurulinux",
+        "License": "GPLv3",
+        "Name": "AlterLinux",
+        "ServiceTypes": [
+            "Plasma/LookAndFeel"
+        ],
+        "Version": "0.1.0",
+        "Website": "https://uhuru.noreply/"
+    },
+    "Keywords": "Desktop;Workspace;Appearance;Look and Feel;Logout;Lock;Suspend;Shutdown;Hibernate;",
+    "X-KDE-fallbackPackage": "org.kde.breeze.desktop",
+    "X-Plasma-MainScript": "defaults"
+}

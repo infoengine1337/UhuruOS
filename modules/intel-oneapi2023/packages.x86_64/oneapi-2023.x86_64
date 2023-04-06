@@ -1,0 +1,33 @@
+#
+# infoengine1337 UhuruOS package list
+#
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# intel-oneapi packages
+
+intel-compute-runtime
+intel-gmmlib
+intel-gpu-tools
+intel-graphics-compiler
+intel-media-driver
+intel-media-sdk
+onednn
+onevpl
+intel-oneapi-common
+intel-oneapi-compiler-dpcpp-cpp-runtime
+intel-oneapi-compiler-dpcpp-cpp-runtime-libs
+intel-oneapi-compiler-shared
+intel-oneapi-compiler-shared-opencl-cpu
+intel-oneapi-compiler-shared-runtime
+intel-oneapi-compiler-shared-runtime-libs
+intel-oneapi-dev-utilities
+intel-oneapi-dpcpp-cpp
+intel-oneapi-dpcpp-debugger
+intel-oneapi-mkl
+intel-oneapi-openmp
+intel-oneapi-tbb
+intel-opencl-clang

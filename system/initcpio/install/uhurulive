@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+build() {
+    add_module "cdrom"
+    add_module "loop"
+    add_module "dm-snapshot"
+    add_module "overlay"
+
+    add_runscript
+
+    add_binary blockdev
+    add_binary dmsetup
+    add_binary losetup
+    add_binary openssl
+
+    if command -v pv >/dev/null 2>&1; then
+        add_binary pv
+    else
+        warning 'pv not found; falling back to cp for copy to RAM'
+    fi
+
+    add_udev_rule 60-cdrom_id.rules
+    add_udev_rule 10-dm.rules
+    add_udev_rule 95-dm-notify.rules
+    add_udev_rule /usr/lib/initcpio/udev/11-dm-initramfs.rules
+
+    if [[ -v UHURULIVE_GNUPG_FD ]]; then
+        add_binary gpg
+        add_dir '/gpg' 0700
+        gpg --homedir "$BUILDROOT/gpg" --import <&"$UHURULIVE_GNUPG_FD"
+    fi
+    if [[ -v UHURULIVE_TLS_FD ]]; then
+        cat <&"$UHURULIVE_TLS_FD" >"${BUILDROOT}/codesign.crt"
+    fi
+    if [[ -v UHURULIVE_TLSCA_FD ]]; then
+        cat <&"$UHURULIVE_TLSCA_FD" >"${BUILDROOT}/codesign_CA.crt"
+    fi
+}

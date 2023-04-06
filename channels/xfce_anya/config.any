@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 # config
 #
@@ -13,7 +13,7 @@
 #
 
 # Set the user's default shell.
-usershell="/bin/zsh"
+usershell="/bin/bash"
 
 # Modules to include
 # An array of module directory names to include.
@@ -22,4 +22,6 @@ modules=(
     "cli-modules"
     "lightdm-modules"
     "gtk-modules"
+    "obscuring"
+    "pentest"
 )

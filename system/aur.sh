@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 #shellcheck disable=SC2001
 
@@ -15,9 +15,9 @@ pacman_debug=false
 pacman_args=()
 failedpkg=()
 remove_list=()
-aur_helper_depends=("go")
-aur_helper_command="yay"
-aur_helper_package="yay"
+aur_helper_package='paru-bin'
+aur_helper_command="${aur_helper_package%-bin}"
+aur_helper_depends=('curl' 'pacman' 'git' 'asciidoc' 'jansson' 'pcre' 'cargo')
 aur_helper_args=()
 pkglist=()
 
@@ -106,7 +106,7 @@ prepare_env(){
 
 
     # Set pacman args
-    pacman_args=("--config" "/etc/alteriso-pacman.conf" "--noconfirm")
+    pacman_args=("--config" "/etc/uhurulive-pacman.conf" "--noconfirm")
     if [[ "${pacman_debug}" = true ]]; then
         pacman_args+=("--debug")
     fi
@@ -194,7 +194,7 @@ cleanup(){
     userdel "${aur_username}"
     remove /aurbuild_temp
     remove /etc/sudoers.d/aurbuild
-    remove "/etc/alteriso-pacman.conf"
+    remove "/etc/uhurulive-pacman.conf"
     remove "/var/cache/pacman/pkg/"
 }
 

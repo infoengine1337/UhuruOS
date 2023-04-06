@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 set -e
 
 if ! type docker >/dev/null 2>&1; then
@@ -124,10 +124,10 @@ else
 fi
 
 DOCKER_RUN_OPTS=()
-DOCKER_RUN_OPTS+=(-v "${DIST_DIR}:/alterlinux/out")
+DOCKER_RUN_OPTS+=(-v "${DIST_DIR}:/uhurulinux/out")
 DOCKER_RUN_OPTS+=(-v "${KMODS_DIR}:/usr/lib/modules:ro")
 [[ "x${EXTERNAL_WORK_DIR}" != "x" ]] && \
-    DOCKER_RUN_OPTS+=(-v "${EXTERNAL_WORK_DIR}:/alterlinux/work")
+    DOCKER_RUN_OPTS+=(-v "${EXTERNAL_WORK_DIR}:/uhurulinux/work")
 [[ "x${NO_SHARE_PKG}" != "xTrue" ]] && {
     DOCKER_RUN_OPTS+=(-v "${SHARE_PKG_DIR}:/var/cache/pacman/pkg")
     DOCKER_RUN_OPTS+=(-v "${SHARE_DB_DIR}:/var/lib/pacman/sync")
@@ -135,5 +135,5 @@ DOCKER_RUN_OPTS+=(-v "${KMODS_DIR}:/usr/lib/modules:ro")
 
 tty >/dev/null 2>&1 && OPT_TTY="-it" || OPT_TTY=""
 
-docker build "${DOCKER_BUILD_OPTS[@]}" -t alterlinux-build:latest "${script_path}"
-exec docker run --rm ${OPT_TTY} --privileged -e _DOCKER=true "${DOCKER_RUN_OPTS[@]}" alterlinux-build "${BUILD_SCRIPT_OPTS[@]}"
+docker build "${DOCKER_BUILD_OPTS[@]}" -t uhurulinux-build:latest "${script_path}"
+exec docker run --rm ${OPT_TTY} --privileged -e _DOCKER=true "${DOCKER_RUN_OPTS[@]}" uhurulinux-build "${BUILD_SCRIPT_OPTS[@]}"

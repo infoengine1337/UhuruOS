@@ -1,0 +1,58 @@
+#
+# infoengine1337 UhuruOS package list
+#
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# Gnome
+
+
+#-- gnome --#
+gnome-backgrounds
+gnome-boxes
+gnome-calculator
+gnome-calendar
+gnome-control-center
+gnome-common
+gnome-desktop
+gnome-disk-utility
+gnome-keyring
+gnome-logs
+gnome-menus
+gnome-remote-desktop
+gnome-screenshot
+gnome-session
+gnome-settings-daemon
+gnome-shell
+gnome-shell-extensions
+gnome-system-monitor
+gnome-terminal
+mutter
+nautilus
+sushi
+
+
+#-- gnome-extra --#
+dconf-editor
+gnome-tweaks
+
+
+#-- Display manager --#
+gdm
+
+#-- other --#
+gnome-bluetooth
+gnome-epub-thumbnailer
+
+#aur build
+meson
+ninja
+jq
+oniguruma
+
+# libinput
+xf86-input-libinput
+

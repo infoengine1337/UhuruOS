@@ -1,6 +1,6 @@
 [Default Applications]
-#default-web-browser=firefox.desktop
-#text/html=firefox.desktop
-#x-scheme-handler/http=firefox.desktop
-#x-scheme-handler/https=firefox.desktop
-#application/pdf=firefox.desktop
+#default-web-browser=chromium.desktop
+#text/html=chromium.desktop
+#x-scheme-handler/http=chromium.desktop
+#x-scheme-handler/https=chromium.desktop
+#application/pdf=chromium.desktop

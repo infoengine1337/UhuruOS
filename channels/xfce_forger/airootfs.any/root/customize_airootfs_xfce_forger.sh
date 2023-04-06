@@ -1,19 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 
-# Replace wallpaper.
-#if [[ -f /usr/share/backgrounds/xfce/xfce-verticals.png ]]; then
-#    remove /usr/share/backgrounds/xfce/xfce-verticals.png
-#    ln -s /usr/share/backgrounds/arch-logo-dark/ALDark1.png /usr/share/backgrounds/xfce/xfce-verticals.png
-#fi
-#[[ -f /usr/share/backgrounds/arch-logo-dark/ALDark1.png ]] && chmod 644 /usr/share/backgrounds/arch-logo-dark/ALDark1.png
-
+# Change wallpaper
+XFCE4_FIRSTBG="/usr/share/backgrounds/xfce/xfce-shapes.svg"
+mv "/usr/share/backgrounds/xfce/user-default.png" "${XFCE4_FIRSTBG}"
 
 # Replace right menu
 if [[ "${language}" = "ja" ]]; then
@@ -26,12 +22,6 @@ else
     remove "/etc/skel/.config/Thunar/uca.xml.jp"
     remove "/home/${username}/.config/Thunar/uca.xml.jp"
 fi
-
-
-# Change Theme
-
-#sed -i -E 's@(^    <property name="theme" type="string" value=").*("/>$)@\1Midnight-Night\2@g' "/home/${username}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
-#sed -i -E 's@(^    <property name="ThemeName" type="string" value=").*("/>$)@\1Midnight-Night\2@g' "/home/${username}/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml"
 
 # Enable zeronet
 _safe_systemctl enable zeronet.service

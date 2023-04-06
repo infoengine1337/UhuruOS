@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # Create Calamares Entry
 if [[ -f "/etc/skel/Desktop/calamares.desktop" ]]; then
@@ -51,5 +51,5 @@ sed -i "s/%INSTALL_DIR%/${install_dir}/g" "/usr/share/calamares/modules/unpackfs
 sed -i "s/%ARCH%/${arch}/g" "/usr/share/calamares/modules/unpackfs.conf"
 
 # Add disabling of sudo setting
-echo -e "\nremove \"/etc/sudoers.d/alterlive\"" >> "/usr/share/calamares/final-process"
+echo -e "\nremove \"/etc/sudoers.d/uhurulive\"" >> "/usr/share/calamares/final-process"
 echo -e "\nremove \"/etc/systemd/system/getty@.service.d\"" >> "/usr/share/calamares/final-process"

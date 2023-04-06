@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 set -e
 
@@ -34,9 +34,9 @@ remove /etc/polkit-1/rules.d/01-nopasswork.rules
 
 remove /etc/systemd/system/getty@.service.d/autologin.conf
 remove /root/.automated_script.sh
-remove /etc/mkinitcpio-archiso.conf
+remove /etc/mkinitcpio-uhurulive.conf
 remove /etc/initcpio
-remove /boot/archiso.img
+remove /boot/uhurulive.img
 remove /etc/systemd/system/etc-pacman.d-gnupg.mount
 remove /etc/systemd/journald.conf.d/volatile-storage.conf
 remove /airootfs.any/etc/systemd/logind.conf.d/do-not-suspend.conf

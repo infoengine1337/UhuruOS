@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 
 set -e -u
@@ -97,7 +97,7 @@ if [[ -f "/etc/systemd/system/getty@.service.d/autologin.conf" ]]; then
 fi
 
 
-# Set to execute sudo without password as alter user.
+# Set to execute sudo without password as uhuru user.
 cat >> /etc/sudoers << "EOF"
 Defaults pwfeedback
 EOF
@@ -155,7 +155,7 @@ grub_os_name="${os_name%' Linux'}"
 sed -i -r  "s/(GRUB_DISTRIBUTOR=).*/\1\"${grub_os_name}\"/g" "/etc/default/grub"
 
 # Create new icon cache
-# This is because alter icon was added by airootfs.
+# This is because uhuru icon was added by airootfs.
 run_additional_command "gtk-update-icon-cache -f /usr/share/icons/hicolor"
 
 
@@ -167,7 +167,7 @@ _safe_systemctl set-default graphical.target
 _safe_systemctl enable pacman-init.service
 #_safe_systemctl enable cups.service
 _safe_systemctl enable NetworkManager.service
-#_safe_systemctl enable alteriso-reflector.service
+#_safe_systemctl enable uhurulive-reflector.service
 #_safe_systemctl disable reflector.service
 
 

@@ -3,10 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0
 #
 # mk-linux419
-# Twitter: @fascoder_4
-# Email  : mk419@fascode.net
+# Known As: @fascoder_4
+# Email  : mk419@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 # package.py
 #

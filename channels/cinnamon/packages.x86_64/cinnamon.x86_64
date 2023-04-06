@@ -1,0 +1,19 @@
+#
+# infoengine1337 UhuruOS package list
+#
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# Cinnamon Desktop Environment
+
+
+#-- Cinnamon --#
+cinnamon
+cinnamon-translations
+
+#-- Tools --#
+dconf-editor
+gnome-terminal

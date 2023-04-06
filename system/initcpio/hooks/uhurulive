@@ -1,0 +1,254 @@
+#!/bin/ash
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# args: source, newroot, mountpoint
+_mnt_dmsnapshot() {
+    local img="${1}"
+    local newroot="${2}"
+    local mnt="${3}"
+    local img_fullname="${img##*/}"
+    local img_name="${img_fullname%%.*}"
+    local dm_snap_name="${dm_snap_prefix}_${img_name}"
+    local ro_dev ro_dev_size rw_dev
+
+    ro_dev="$(losetup --find --show --read-only -- "${img}")"
+    ro_dev_size="$(blockdev --getsz "${ro_dev}")"
+
+    if [ "${cow_persistent}" = "P" ]; then
+        if [ -f "/run/uhurulive/cowspace/${cow_directory}/${img_name}.cow" ]; then
+            msg ":: Found '/run/uhurulive/cowspace/${cow_directory}/${img_name}.cow', using as persistent."
+        else
+            msg ":: Creating '/run/uhurulive/cowspace/${cow_directory}/${img_name}.cow' as persistent."
+            truncate -s "${cow_spacesize}" "/run/uhurulive/cowspace/${cow_directory}/${img_name}.cow"
+        fi
+    else
+        if [ -f "/run/uhurulive/cowspace/${cow_directory}/${img_name}.cow" ]; then
+            msg ":: Found '/run/uhurulive/cowspace/${cow_directory}/${img_name}.cow' but non-persistent requested, removing."
+            rm -f "/run/uhurulive/cowspace/${cow_directory}/${img_name}.cow"
+        fi
+        msg ":: Creating '/run/uhurulive/cowspace/${cow_directory}/${img_name}.cow' as non-persistent."
+        truncate -s "${cow_spacesize}" "/run/uhurulive/cowspace/${cow_directory}/${img_name}.cow"
+    fi
+
+    rw_dev="$(losetup --find --show "/run/uhurulive/cowspace/${cow_directory}/${img_name}.cow")"
+
+    dmsetup create "${dm_snap_name}" --table \
+        "0 ${ro_dev_size} snapshot ${ro_dev} ${rw_dev} ${cow_persistent} ${cow_chunksize}"
+
+    if [ "${cow_persistent}" != "P" ]; then
+        rm -f "/run/uhurulive/cowspace/${cow_directory}/${img_name}.cow"
+    fi
+
+    _mnt_dev "/dev/mapper/${dm_snap_name}" "${newroot}${mnt}" "-w" "defaults"
+}
+
+# args: source, newroot, mountpoint
+_mnt_overlayfs() {
+    local src="${1}"
+    local newroot="${2}"
+    local mnt="${3}"
+    mkdir -p "/run/uhurulive/cowspace/${cow_directory}/upperdir" "/run/uhurulive/cowspace/${cow_directory}/workdir"
+    mount -t overlay -o \
+        "lowerdir=${src},upperdir=/run/uhurulive/cowspace/${cow_directory}/upperdir,workdir=/run/uhurulive/cowspace/${cow_directory}/workdir" \
+        airootfs "${newroot}${mnt}"
+}
+
+# args: /path/to/image_file, mountpoint
+_mnt_fs() {
+    local img="${1}"
+    local mnt="${2}"
+    local img_fullname="${img##*/}"
+    local img_loopdev
+
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if [ "${copytoram}" = "y" ]; then
+        msg -n ":: Copying rootfs image to RAM..."
+
+        # in case we have pv use it to display copy progress feedback otherwise
+        # fallback to using plain cp
+        if command -v pv >/dev/null 2>&1; then
+            echo ""
+            (pv "${img}" >"/run/uhurulive/copytoram/${img_fullname}")
+            local rc=$?
+        else
+            (cp -- "${img}" "/run/uhurulive/copytoram/${img_fullname}")
+            local rc=$?
+        fi
+
+        if [ $rc != 0 ]; then
+            echo "ERROR: while copy '${img}' to '/run/uhurulive/copytoram/${img_fullname}'"
+            launch_interactive_shell
+        fi
+
+        img="/run/uhurulive/copytoram/${img_fullname}"
+        msg "done."
+    fi
+    img_loopdev="$(losetup --find --show --read-only -- "${img}")"
+    _mnt_dev "${img_loopdev}" "${mnt}" "-r" "defaults"
+}
+
+# args: device, mountpoint, flags, opts
+_mnt_dev() {
+    local dev="${1}"
+    local mnt="${2}"
+    local flg="${3}"
+    local opts="${4}"
+
+    msg ":: Mounting '${dev}' to '${mnt}'"
+
+    while ! poll_device "${dev}" 30; do
+        echo "ERROR: '${dev}' device did not show up after 30 seconds..."
+        echo "   Falling back to interactive prompt"
+        echo "   You can try to fix the problem manually, log out when you are finished"
+        launch_interactive_shell
+    done
+
+    if mount --mkdir -o "${opts}" "${flg}" "${dev}" "${mnt}" ; then
+        msg ":: Device '${dev}' mounted successfully."
+    else
+        echo "ERROR; Failed to mount '${dev}'"
+        echo "   Falling back to interactive prompt"
+        echo "   You can try to fix the problem manually, log out when you are finished"
+        launch_interactive_shell
+    fi
+}
+
+_verify_checksum() {
+    local _status
+    cd "/run/uhurulive/bootmnt/${uhurulivebasedir}/${arch}" || exit 1
+    sha512sum -c airootfs.sha512 >/tmp/checksum.log 2>&1
+    _status=$?
+    cd -- "${OLDPWD}" || exit 1
+    return "${_status}"
+}
+
+_verify_signature() {
+    local _status
+    local sigfile="${1}"
+    cd "/run/uhurulive/bootmnt/${uhurulivebasedir}/${arch}" || exit 1
+    gpg --homedir /gpg --status-fd 1 --verify "${sigfile}" 2>/dev/null | grep -E '^\[GNUPG:\] GOODSIG'
+    _status=$?
+    cd -- "${OLDPWD}" || exit 1
+    return ${_status}
+}
+
+run_hook() {
+    [ -z "${arch}" ] && arch="$(uname -m)"
+    [ -z "${copytoram_size}" ] && copytoram_size="128M"
+    [ -z "${uhurulivebasedir}" ] && uhurulivebasedir="arch"
+    [ -z "${dm_snap_prefix}" ] && dm_snap_prefix="arch"
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    [ -z "${uhurulivedevice}" ] && uhurulivedevice="/dev/disk/by-label/${uhurulivelabel}"
+    [ -z "${cow_spacesize}" ] && cow_spacesize="%COWSPACE%"
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if [ -n "${cow_label}" ]; then
+        cow_device="/dev/disk/by-label/${cow_label}"
+        [ -z "${cow_persistent}" ] && cow_persistent="P"
+    elif [ -n "${cow_device}" ]; then
+        [ -z "${cow_persistent}" ] && cow_persistent="P"
+    else
+        cow_persistent="N"
+    fi
+
+    [ -z "${cow_flags}" ] && cow_flags="defaults"
+    [ -z "${cow_directory}" ] && cow_directory="persistent_${uhurulivelabel}/${arch}"
+    [ -z "${cow_chunksize}" ] && cow_chunksize="8"
+
+    # set mount handler for uhurulive
+    export mount_handler="uhurulive_mount_handler"
+}
+
+# This function is called normally from init script, but it can be called
+# as chain from other mount handlers.
+# args: /path/to/newroot
+uhurulive_mount_handler() {
+    local newroot="${1}"
+    local sigfile fs_img
+
+    if ! mountpoint -q "/run/uhurulive/bootmnt"; then
+        _mnt_dev "${uhurulivedevice}" "/run/uhurulive/bootmnt" "-r" "defaults"
+    fi
+
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if [ "${checksum}" = "y" ]; then
+        if [ -f "/run/uhurulive/bootmnt/${uhurulivebasedir}/${arch}/airootfs.sha512" ]; then
+            msg ":: Self-test requested, please wait..."
+            if _verify_checksum; then
+                msg "Checksum is OK, continue booting."
+            else
+                echo "ERROR: one or more files are corrupted"
+                echo "see /tmp/checksum.log for details"
+                launch_interactive_shell
+            fi
+        else
+            echo "ERROR: checksum=y option specified but ${uhurulivebasedir}/${arch}/airootfs.sha512 not found"
+            launch_interactive_shell
+        fi
+    fi
+
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if [ "${verify}" = "y" ]; then
+        if [ -f "/run/uhurulive/bootmnt/${uhurulivebasedir}/${arch}/airootfs.sfs.sig" ]; then
+            sigfile="airootfs.sfs.sig"
+        elif [ -f "/run/uhurulive/bootmnt/${uhurulivebasedir}/${arch}/airootfs.erofs.sig" ]; then
+            sigfile="airootfs.erofs.sig"
+        fi
+        if [ -n "${sigfile}" ]; then
+            msg ":: Signature verification requested, please wait..."
+            if _verify_signature "${sigfile}"; then
+                msg "Signature is OK, continue booting."
+            else
+                echo "ERROR: one or more files are corrupted"
+                launch_interactive_shell
+            fi
+        else
+            echo "ERROR: verify=y option specified but GPG signature not found in ${uhurulivebasedir}/${arch}/"
+            launch_interactive_shell
+        fi
+    fi
+
+    if [ "${copytoram}" = "y" ]; then
+        msg ":: Mounting /run/uhurulive/copytoram (tmpfs) filesystem, size=${copytoram_size}"
+        mount --mkdir -t tmpfs -o "size=${copytoram_size}",mode=0755 copytoram /run/uhurulive/copytoram
+    fi
+
+    if [ -n "${cow_device}" ]; then
+        # Mount cow_device read-only at first and remount it read-write right after. This prevents errors when the
+        # device is already mounted read-only somewhere else (e.g. if cow_device and uhurulivedevice are the same).
+        _mnt_dev "${cow_device}" "/run/uhurulive/cowspace" "-r" "${cow_flags}"
+        mount -o remount,rw "/run/uhurulive/cowspace"
+    else
+        msg ":: Mounting /run/uhurulive/cowspace (tmpfs) filesystem, size=${cow_spacesize}..."
+        mount --mkdir -t tmpfs -o "size=${cow_spacesize}",mode=0755 cowspace /run/uhurulive/cowspace
+    fi
+    mkdir -p "/run/uhurulive/cowspace/${cow_directory}"
+    chmod 0700 "/run/uhurulive/cowspace/${cow_directory}"
+
+    if [ -f "/run/uhurulive/bootmnt/${uhurulivebasedir}/${arch}/airootfs.sfs" ]; then
+        fs_img="/run/uhurulive/bootmnt/${uhurulivebasedir}/${arch}/airootfs.sfs"
+    elif [ -f "/run/uhurulive/bootmnt/${uhurulivebasedir}/${arch}/airootfs.erofs" ]; then
+        fs_img="/run/uhurulive/bootmnt/${uhurulivebasedir}/${arch}/airootfs.erofs"
+    else
+        echo "ERROR: no root file system image found"
+        launch_interactive_shell
+    fi
+    _mnt_fs "${fs_img}" "/run/uhurulive/airootfs"
+    if [ -f "/run/uhurulive/airootfs/airootfs.img" ]; then
+        _mnt_dmsnapshot "/run/uhurulive/airootfs/airootfs.img" "${newroot}" "/"
+    else
+        _mnt_overlayfs "/run/uhurulive/airootfs" "${newroot}" "/"
+    fi
+
+    if [ "${copytoram}" = "y" ]; then
+        umount -d /run/uhurulive/bootmnt
+        rmdir /run/uhurulive/bootmnt
+    fi
+}
+
+# vim: set ft=sh:

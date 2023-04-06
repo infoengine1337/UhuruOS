@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+build() {
+    add_checked_modules -f "(irda|phy|wimax|wireless|ppp_|plip|pppoe)" "/drivers/net/"
+
+    add_runscript
+
+    add_binary /usr/lib/initcpio/ipconfig /usr/bin/ipconfig
+
+    # Add hosts support files+dns
+    add_binary /usr/lib/libnss_files.so.2
+    add_binary /usr/lib/libnss_dns.so.2
+
+    add_dir /etc
+    printf "hosts: files dns\n" >"$BUILDROOT/etc/nsswitch.conf"
+}
+
+help() {
+    cat <<HELPEOF
+  This hook loads the necessary modules for boot via PXE.
+HELPEOF
+}

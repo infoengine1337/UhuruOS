@@ -1,5 +1,5 @@
 # Tools
-Alter Linuxのビルドに使用する処理をコマンド化したものです。  
+infoengine1337 UhuruOSのビルドに使用する処理をコマンド化したものです。  
 これらのスクリプトは相互に呼び出したり、`build.sh`から呼び出されたりします。  
 コマンドラインから実行することも可能です。  
 
@@ -7,7 +7,7 @@ Alter Linuxのビルドに使用する処理をコマンド化したものです
 全てのチャンネルのパッケージの一覧を表示します。  
 `channel.sh`でチャンネルの一覧を取得後、`pkglist.sh`でパッケージ一覧を取得します。
 
-## alteriso-info.sh
+## uhurulive-info.sh
 ビルド情報を書いたテキストファイルを出力します。詳細は`alteiso-info.sh`を実行してください。  
 
 ## build_helper.py
@@ -43,7 +43,7 @@ menuconfigで使用されるスクリプトです。
 言語設定ファイルの解析とその結果の出力、確認を行います。  
 詳細は`locale.sh -h`を実行してください。
 
-## menuconf-to-alterconf.sh
+## menuconf-to-uhuruconf.sh
 menuconfigで使用されるスクリプトです。  
 
 ## module.sh

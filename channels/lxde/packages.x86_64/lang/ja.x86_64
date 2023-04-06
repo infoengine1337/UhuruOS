@@ -1,0 +1,21 @@
+#
+# infoengine1337 UhuruOS package list
+#
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# This package list will only be installed if the Japanese option is enabled.
+#
+# Japanese package
+
+# fcitx config
+uhurulinux-fcitx-conf
+
+# fcitx
+fcitx
+fcitx-configtool
+fcitx-mozc
+fcitx-qt5
