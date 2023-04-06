@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 # build.sh
 #
@@ -16,7 +16,7 @@ script_path="$( cd -P "$( dirname "$(readlink -f "$0")" )" && cd .. && pwd )"
 script_name="$(basename "${0}")"
 script_full="${script_path}/tools/${script_name}"
 module_dir="${script_path}/modules"
-alteriso_version="3.1"
+uhurulive_version="3.1"
 
 _help() {
     echo "usage ${0} [options] [command]"
@@ -42,13 +42,13 @@ check(){
         exit 2
     fi
     local _version
-    if [[ -f "${module_dir}/${1}/alteriso" ]]; then
+    if [[ -f "${module_dir}/${1}/uhurulive" ]]; then
         _version="$(
-            source "${module_dir}/${1}/alteriso"
-            echo "${alteriso}"
-            unset alteriso
+            source "${module_dir}/${1}/uhurulive"
+            echo "${uhurulive}"
+            unset uhurulive
         )"
-        if (( "$(echo "${_version}" | cut -d "." -f 1)" == "$(echo "${alteriso_version}" | cut -d "." -f 1)" )); then
+        if (( "$(echo "${_version}" | cut -d "." -f 1)" == "$(echo "${uhurulive_version}" | cut -d "." -f 1)" )); then
             exit 0
         fi
     else
@@ -62,15 +62,15 @@ show(){
         _name="$(basename "$(dirname "${_module}")")"
         _version="$(
             source "${_module}"
-            echo "${alteriso}"
-            unset alteriso
+            echo "${uhurulive}"
+            unset uhurulive
         )"
-        if (( "$(echo "${_version}" | cut -d "." -f 1)" == "$(echo "${alteriso_version}" | cut -d "." -f 1)" )); then
+        if (( "$(echo "${_version}" | cut -d "." -f 1)" == "$(echo "${uhurulive_version}" | cut -d "." -f 1)" )); then
             _list+=("${_name}")
         else
             continue
         fi
-    done < <(find "${module_dir}" -maxdepth 2 -mindepth 2 -type f -name "alteriso")
+    done < <(find "${module_dir}" -maxdepth 2 -mindepth 2 -type f -name "uhurulive")
     echo "${_list[@]}"
 }
 
@@ -91,7 +91,7 @@ while true; do
             exit 0
             ;;
         -v | --version)
-            alteriso_version="${2}"
+            uhurulive_version="${2}"
             shift 2
             ;;
         --)

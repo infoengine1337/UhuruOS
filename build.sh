@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 # build.sh
 #
@@ -22,7 +22,7 @@ customized_username=false customized_password=false customized_kernel=false cust
 pkglist_args=() makepkg_script_args=() modules=() norepopkg=()
 legacy_mode=false rerun=false
 DEFAULT_ARGUMENT="" ARGUMENT=("${@}")
-alteriso_version="3.1"
+uhurulive_version="3.1"
 
 # Load config file
 [[ ! -f "${defaultconfig}" ]] && "${tools_dir}/msg.sh" -a 'build.sh' error "${defaultconfig} was not found." && exit 1
@@ -99,8 +99,8 @@ _usage () {
     done
 
     echo " Channel:"
-    for _dirname in $(bash "${tools_dir}/channel.sh" --version "${alteriso_version}" -d -b -n --line show | sed "s|.add$||g"); do
-        readarray -t _output < <("${tools_dir}/channel.sh" --version "${alteriso_version}" --nocheck desc "${_dirname}")
+    for _dirname in $(bash "${tools_dir}/channel.sh" --version "${uhurulive_version}" -d -b -n --line show | sed "s|.add$||g"); do
+        readarray -t _output < <("${tools_dir}/channel.sh" --version "${uhurulive_version}" --nocheck desc "${_dirname}")
         _first=true
         echo -n "    ${_dirname}"
         for _out in "${_output[@]}"; do
@@ -172,7 +172,7 @@ load_config() {
 
 # Display channel list
 show_channel_list() {
-    local _args=("-v" "${alteriso_version}" show)
+    local _args=("-v" "${uhurulive_version}" show)
     [[ "${nochkver}" = true ]] && _args+=("-n")
     bash "${tools_dir}/channel.sh" "${_args[@]}"
 }
@@ -191,11 +191,11 @@ _pacstrap(){
 }
 
 # chroot環境でpacmanコマンドを実行
-# /etc/alteriso-pacman.confを準備してコマンドを実行します
+# /etc/uhurulive-pacman.confを準備してコマンドを実行します
 _run_with_pacmanconf(){
-    sed "s|^CacheDir     =|#CacheDir    =|g" "${build_dir}/pacman.conf" > "${airootfs_dir}/etc/alteriso-pacman.conf"
+    sed "s|^CacheDir     =|#CacheDir    =|g" "${build_dir}/pacman.conf" > "${airootfs_dir}/etc/uhurulive-pacman.conf"
     eval -- "${@}"
-    remove "${airootfs_dir}/etc/alteriso-pacman.conf"
+    remove "${airootfs_dir}/etc/uhurulive-pacman.conf"
 }
 
 # コマンドをchrootで実行する
@@ -302,8 +302,8 @@ prepare_env() {
     # Set gpg key
     if [[ -n "${gpg_key}" ]]; then
         gpg --batch --output "${work_dir}/pubkey.gpg" --export "${gpg_key}"
-        exec {ARCHISO_GNUPG_FD}<>"${build_dir}/pubkey.gpg"
-        export ARCHISO_GNUPG_FD
+        exec {UHURULIVE_GNUPG_FD}<>"${build_dir}/pubkey.gpg"
+        export UHURULIVE_GNUPG_FD
     fi
 
     # 強制終了時に作業ディレクトリを削除する
@@ -357,9 +357,6 @@ prepare_build() {
     # Debug mode
     [[ "${bash_debug}" = true ]] && set -x -v
 
-    # Show alteriso version
-    [[ -n "${gitrev-""}" ]] && msg_debug "The version of alteriso is ${gitrev}"
-
     # Load configs
     load_config "${channel_dir}/config.any" "${channel_dir}/config.${arch}"
 
@@ -367,7 +364,7 @@ prepare_build() {
     modules+=("${additional_modules[@]}")
 
     # Legacy mode
-    if [[ "$(bash "${tools_dir}/channel.sh" --version "${alteriso_version}" ver "${channel_name}")" = "3.0" ]]; then
+    if [[ "$(bash "${tools_dir}/channel.sh" --version "${uhurulive_version}" ver "${channel_name}")" = "3.0" ]]; then
         msg_warn "The module cannot be used because it works with Alter ISO3.0 compatibility."
         modules=("legacy")
         legacy_mode=true
@@ -411,10 +408,6 @@ prepare_build() {
     [[ "${customized_username}" = false ]] && username="${defaultusername}"
     [[ "${customized_password}" = false ]] && password="${defaultpassword}"
 
-    # gitversion
-    [[ ! -d "${script_path}/.git" ]] && [[ "${gitversion}" = true ]] && msg_error "There is no git directory. You need to use git clone to use this feature." "1"
-    [[ "${gitversion}" = true ]] && iso_version="${iso_version}-${gitrev}"
-
     # Generate tar file name
     tar_ext=""
     case "${tar_comp}" in
@@ -431,11 +424,11 @@ prepare_build() {
     msg_debug "Iso filename is ${iso_filename}"
 
     # check bool
-    check_bool boot_splash cleaning noconfirm nodepend customized_username customized_password noloopmod nochname tarball noiso noaur customized_syslinux norescue_entry debug bash_debug nocolor msgdebug noefi nosigcheck gitversion
+    check_bool boot_splash cleaning noconfirm nodepend customized_username customized_password noloopmod nochname tarball noiso noaur customized_syslinux norescue_entry debug bash_debug nocolor msgdebug noefi nosigcheck
 
     # Check architecture for each channel
     local _exit=0
-    bash "${tools_dir}/channel.sh" --version "${alteriso_version}" -a "${arch}" -n -b check "${channel_name}" || _exit="${?}"
+    bash "${tools_dir}/channel.sh" --version "${uhurulive_version}" -a "${arch}" -n -b check "${channel_name}" || _exit="${?}"
     ( (( "${_exit}" != 0 )) && (( "${_exit}" != 1 )) ) && msg_error "${channel_name} channel does not support current architecture (${arch})." "1"
 
     # Run with tee
@@ -535,6 +528,39 @@ make_packages_repo() {
     # Install packages on airootfs
     _pacstrap "${_pkglist_install[@]}"
 
+    local _airootfs _airootfs_script_options _script _script_list _airootfs_list=() _main_script
+
+    for_module '_airootfs_list+=("${module_dir}/{}/airootfs.any" "${module_dir}/{}/airootfs.${arch}")'
+    _airootfs_list+=("${channel_dir}/airootfs.any" "${channel_dir}/airootfs.${arch}")
+
+    for _airootfs in "${_airootfs_list[@]}";do
+        if [[ -d "${_airootfs}" ]]; then
+            msg_debug "Copying airootfs ${_airootfs} ..."
+            _cp "${_airootfs}"/* "${airootfs_dir}"
+        fi
+    done
+
+    _cp "${script_path}/system/pacman-${arch}.conf" "${airootfs_dir}/etc/pacman.conf"
+    chmod -Rf 600 "${airootfs_dir}/root/.gnupg"
+    
+    local PACMAN_GNUPG_HOMEDIR="${airootfs_dir}/etc/pacman.d/gnupg"
+    if [ -d "${PACMAN_GNUPG_HOMEDIR}" ]; then
+      rm -rf "${PACMAN_GNUPG_HOMEDIR}"
+      install -d -m 600 "${PACMAN_GNUPG_HOMEDIR}"
+    else
+      install -d -m 600 "${PACMAN_GNUPG_HOMEDIR}"
+    fi
+    
+chroot "${airootfs_dir}" /bin/bash << "EOC"
+  ntpdate -u time.apple.com 2> /dev/null || true
+  hwclock --systohc 2> /dev/null || true
+  trust extract-compat
+  dirmngr --homedir=/root/.gnupg < /dev/null
+  dirmngr --homedir=/etc/pacman.d/gnupg < /dev/null
+  pacman-key --init 2> /dev/null || false
+  pacman-key --populate 2> /dev/null || false
+EOC
+
     return 0
 }
 
@@ -577,7 +603,7 @@ make_pkgbuild() {
         _cp "${_dir}" "${airootfs_dir}/pkgbuilds/"
     done
     
-    # copy buold script
+    # copy build script
     _cp "${script_path}/system/pkgbuild.sh" "${airootfs_dir}/root/pkgbuild.sh"
 
     # Run build script
@@ -593,16 +619,6 @@ make_pkgbuild() {
 make_customize_airootfs() {
     # Overwrite airootfs with customize_airootfs.
     local _airootfs _airootfs_script_options _script _script_list _airootfs_list=() _main_script
-
-    for_module '_airootfs_list+=("${module_dir}/{}/airootfs.any" "${module_dir}/{}/airootfs.${arch}")'
-    _airootfs_list+=("${channel_dir}/airootfs.any" "${channel_dir}/airootfs.${arch}")
-
-    for _airootfs in "${_airootfs_list[@]}";do
-        if [[ -d "${_airootfs}" ]]; then
-            msg_debug "Copying airootfs ${_airootfs} ..."
-            _cp "${_airootfs}"/* "${airootfs_dir}"
-        fi
-    done
 
     # Replace /etc/mkinitcpio.conf if Plymouth is enabled.
     if [[ "${boot_splash}" = true ]]; then
@@ -660,35 +676,32 @@ make_customize_airootfs() {
     _chroot_run "${_main_script}" "${_airootfs_script_options[@]}"
     remove "${airootfs_dir}/${_main_script}"
 
-    # /root permission https://github.com/archlinux/archiso/commit/d39e2ba41bf556674501062742190c29ee11cd59
-    chmod -f 750 "${airootfs_dir}/root"
-
     return 0
 }
 
-# Copy mkinitcpio archiso hooks and build initramfs (airootfs)
+# Copy mkinitcpio uhurulive hooks and build initramfs (airootfs)
 make_setup_mkinitcpio() {
     local _hook
     mkdir -p "${airootfs_dir}/etc/initcpio/hooks" "${airootfs_dir}/etc/initcpio/install"
 
-    for _hook in "archiso" "archiso_pxe_common" "archiso_pxe_nbd" "archiso_pxe_http" "archiso_pxe_nfs" "archiso_loop_mnt"; do
+    for _hook in "uhurulive" "uhurulive_pxe_common" "uhurulive_pxe_nbd" "uhurulive_pxe_http" "uhurulive_pxe_nfs" "uhurulive_loop_mnt"; do
         install -m 0644 -- "${script_path}/system/initcpio/hooks/${_hook}" "${airootfs_dir}/etc/initcpio/hooks"
         install -m 0644 -- "${script_path}/system/initcpio/install/${_hook}" "${airootfs_dir}/etc/initcpio/install"
     done
 
-    sed -i "s|%COWSPACE%|${cowspace}|g" "${airootfs_dir}/etc/initcpio/hooks/archiso"
-    #sed -i "s|/usr/lib/initcpio/|/etc/initcpio/|g" "${airootfs_dir}/etc/initcpio/install/archiso_shutdown"
-    #install -m 0644 -- "${script_path}/system/initcpio/install/archiso_kms" "${airootfs_dir}/etc/initcpio/install"
-    #install -m 0755 -- "${script_path}/system/initcpio/script/archiso_shutdown" "${airootfs_dir}/etc/initcpio"
-    install -m 0644 -- "${script_path}/mkinitcpio/mkinitcpio-archiso.conf" "${airootfs_dir}/etc/mkinitcpio-archiso.conf"
-    [[ "${boot_splash}" = true ]] && cp "${script_path}/mkinitcpio/mkinitcpio-archiso-plymouth.conf" "${airootfs_dir}/etc/mkinitcpio-archiso.conf"
+    sed -i "s|%COWSPACE%|${cowspace}|g" "${airootfs_dir}/etc/initcpio/hooks/uhurulive"
+    #sed -i "s|/usr/lib/initcpio/|/etc/initcpio/|g" "${airootfs_dir}/etc/initcpio/install/uhurulive_shutdown"
+    install -m 0644 -- "${script_path}/system/initcpio/install/uhurulive_kms" "${airootfs_dir}/etc/initcpio/install"
+    #install -m 0755 -- "${script_path}/system/initcpio/script/uhurulive_shutdown" "${airootfs_dir}/etc/initcpio"
+    install -m 0644 -- "${script_path}/mkinitcpio/mkinitcpio-uhurulive.conf" "${airootfs_dir}/etc/mkinitcpio-uhurulive.conf"
+    [[ "${boot_splash}" = true ]] && cp "${script_path}/mkinitcpio/mkinitcpio-uhurulive-plymouth.conf" "${airootfs_dir}/etc/mkinitcpio-uhurulive.conf"
 
     if [[ "${gpg_key}" ]]; then
         gpg --export "${gpg_key}" >"${build_dir}/gpgkey"
         exec 17<>"${build_dir}/gpgkey"
     fi
 
-    _chroot_run mkinitcpio -c "/etc/mkinitcpio-archiso.conf" -k "/boot/${kernel_filename}" -g "/boot/archiso.img"
+    _chroot_run mkinitcpio -c "/etc/mkinitcpio-uhurulive.conf" -k "/boot/${kernel_filename}" -g "/boot/uhurulive.img"
 
     [[ "${gpg_key}" ]] && exec 17<&-
     
@@ -698,7 +711,7 @@ make_setup_mkinitcpio() {
 # Prepare kernel/initramfs ${install_dir}/boot/
 make_boot() {
     mkdir -p "${isofs_dir}/${install_dir}/boot/${arch}"
-    install -m 0644 --  "${airootfs_dir}/boot/archiso.img" "${isofs_dir}/${install_dir}/boot/${arch}/archiso.img"
+    install -m 0644 --  "${airootfs_dir}/boot/uhurulive.img" "${isofs_dir}/${install_dir}/boot/${arch}/uhurulive.img"
     install -m 0644 --  "${airootfs_dir}/boot/${kernel_filename}" "${isofs_dir}/${install_dir}/boot/${arch}/${kernel_filename}"
 
     return 0
@@ -741,7 +754,7 @@ make_syslinux() {
 
     # copy all syslinux config to work dir
     for _cfg in "${build_dir}/syslinux/"*.cfg; do
-        sed "s|%ARCHISO_LABEL%|${iso_label}|g;
+        sed "s|%UHURULIVE_LABEL%|${iso_label}|g;
             s|%OS_NAME%|${os_name}|g;
             s|%KERNEL_FILENAME%|${kernel_filename}|g;
             s|%ARCH%|${arch}|g;
@@ -755,8 +768,8 @@ make_syslinux() {
         _no_use_config_name=nosplash
     fi
     for _pxe_or_sys in "sys" "pxe"; do
-        remove "${isofs_dir}/syslinux/archiso_${_pxe_or_sys}_${_no_use_config_name}.cfg"
-        mv "${isofs_dir}/syslinux/archiso_${_pxe_or_sys}_${_use_config_name}.cfg" "${isofs_dir}/syslinux/archiso_${_pxe_or_sys}.cfg"
+        remove "${isofs_dir}/syslinux/uhurulive_${_pxe_or_sys}_${_no_use_config_name}.cfg"
+        mv "${isofs_dir}/syslinux/uhurulive_${_pxe_or_sys}_${_use_config_name}.cfg" "${isofs_dir}/syslinux/uhurulive_${_pxe_or_sys}.cfg"
     done
 
     # Set syslinux wallpaper
@@ -767,10 +780,10 @@ make_syslinux() {
     local _remove_config
     function _remove_config() {
         remove "${isofs_dir}/syslinux/${1}"
-        sed -i "s|$(grep "${1}" "${isofs_dir}/syslinux/archiso_sys_load.cfg")||g" "${isofs_dir}/syslinux/archiso_sys_load.cfg" 
+        sed -i "s|$(grep "${1}" "${isofs_dir}/syslinux/uhurulive_sys_load.cfg")||g" "${isofs_dir}/syslinux/uhurulive_sys_load.cfg" 
     }
 
-    [[ "${norescue_entry}" = true  ]] && _remove_config archiso_sys_rescue.cfg
+    [[ "${norescue_entry}" = true  ]] && _remove_config uhurulive_sys_rescue.cfg
     [[ "${memtest86}"      = false ]] && _remove_config memtest86.cfg
 
     # copy files
@@ -812,11 +825,11 @@ make_efi() {
     install -d -m 0755 -- "${isofs_dir}/loader/entries"
     sed "s|%ARCH%|${arch}|g;" "${script_path}/efiboot/${_use_config_name}/loader.conf" > "${isofs_dir}/loader/loader.conf"
 
-    readarray -t _efi_config_list < <(find "${script_path}/efiboot/${_use_config_name}/" -mindepth 1 -maxdepth 1 -type f -name "*-archiso-usb*.conf" -printf "%f\n" | grep -v "rescue")
-    [[ "${norescue_entry}" = false ]] && readarray -t _efi_config_list < <(find "${script_path}/efiboot/${_use_config_name}/" -mindepth 1 -maxdepth 1 -type f  -name "*-archiso-usb*.conf" -printf "%f\n")
+    readarray -t _efi_config_list < <(find "${script_path}/efiboot/${_use_config_name}/" -mindepth 1 -maxdepth 1 -type f -name "*-uhurulive-usb*.conf" -printf "%f\n" | grep -v "rescue")
+    [[ "${norescue_entry}" = false ]] && readarray -t _efi_config_list < <(find "${script_path}/efiboot/${_use_config_name}/" -mindepth 1 -maxdepth 1 -type f  -name "*-uhurulive-usb*.conf" -printf "%f\n")
 
     for _efi_config in "${_efi_config_list[@]}"; do
-        sed "s|%ARCHISO_LABEL%|${iso_label}|g;
+        sed "s|%UHURULIVE_LABEL%|${iso_label}|g;
             s|%OS_NAME%|${os_name}|g;
             s|%KERNEL_FILENAME%|${kernel_filename}|g;
             s|%ARCH%|${arch}|g;
@@ -845,18 +858,18 @@ make_efi() {
 # Prepare efiboot.img::/EFI for "El Torito" EFI boot mode
 make_efiboot() {
     truncate -s 128M "${build_dir}/efiboot.img"
-    mkfs.fat -n ARCHISO_EFI "${build_dir}/efiboot.img"
+    mkfs.fat -n EFIBOOTIMG "${build_dir}/efiboot.img"
 
     mkdir -p "${build_dir}/efiboot"
     mount "${build_dir}/efiboot.img" "${build_dir}/efiboot"
 
-    mkdir -p "${build_dir}/efiboot/EFI/alteriso/${arch}" "${build_dir}/efiboot/EFI/BOOT" "${build_dir}/efiboot/loader/entries"
-    _cp "${isofs_dir}/${install_dir}/boot/${arch}/${kernel_filename}" "${build_dir}/efiboot/EFI/alteriso/${arch}/${kernel_filename}.efi"
-    _cp "${isofs_dir}/${install_dir}/boot/${arch}/archiso.img" "${build_dir}/efiboot/EFI/alteriso/${arch}/archiso.img"
+    mkdir -p "${build_dir}/efiboot/EFI/uhurulive/${arch}" "${build_dir}/efiboot/EFI/BOOT" "${build_dir}/efiboot/loader/entries"
+    _cp "${isofs_dir}/${install_dir}/boot/${arch}/${kernel_filename}" "${build_dir}/efiboot/EFI/uhurulive/${arch}/${kernel_filename}.efi"
+    _cp "${isofs_dir}/${install_dir}/boot/${arch}/uhurulive.img" "${build_dir}/efiboot/EFI/uhurulive/${arch}/uhurulive.img"
 
     local _ucode_image _efi_config _use_config_name="nosplash" _bootfile
     for _ucode_image in "${airootfs_dir}/boot/"{intel-uc.img,intel-ucode.img,amd-uc.img,amd-ucode.img,early_ucode.cpio,microcode.cpio}; do
-        [[ -e "${_ucode_image}" ]] && _cp "${_ucode_image}" "${build_dir}/efiboot/EFI/alteriso/"
+        [[ -e "${_ucode_image}" ]] && _cp "${_ucode_image}" "${build_dir}/efiboot/EFI/uhurulive/"
     done
 
     _cp "${airootfs_dir}/usr/share/efitools/efi/HashTool.efi" "${build_dir}/efiboot/EFI/BOOT/"
@@ -869,11 +882,11 @@ make_efiboot() {
 
     find "${isofs_dir}/loader/entries/" -maxdepth 1 -mindepth 1 -name "uefi-shell*" -type f -printf "%p\0" | xargs -0 -I{} cp {} "${build_dir}/efiboot/loader/entries/"
 
-    readarray -t _efi_config_list < <(find "${script_path}/efiboot/${_use_config_name}/" -mindepth 1 -maxdepth 1 -type f -name "*-archiso-cd*.conf" -printf "%f\n" | grep -v "rescue")
-    [[ "${norescue_entry}" = false ]] && readarray -t _efi_config_list < <(find "${script_path}/efiboot/${_use_config_name}/" -mindepth 1 -maxdepth 1 -type f  -name "*-archiso-cd*.conf" -printf "%f\n")
+    readarray -t _efi_config_list < <(find "${script_path}/efiboot/${_use_config_name}/" -mindepth 1 -maxdepth 1 -type f -name "*-uhurulive-cd*.conf" -printf "%f\n" | grep -v "rescue")
+    [[ "${norescue_entry}" = false ]] && readarray -t _efi_config_list < <(find "${script_path}/efiboot/${_use_config_name}/" -mindepth 1 -maxdepth 1 -type f  -name "*-uhurulive-cd*.conf" -printf "%f\n")
 
     for _efi_config in "${_efi_config_list[@]}"; do
-        sed "s|%ARCHISO_LABEL%|${iso_label}|g;
+        sed "s|%UHURULIVE_LABEL%|${iso_label}|g;
             s|%OS_NAME%|${os_name}|g;
             s|%KERNEL_FILENAME%|${kernel_filename}|g;
             s|%ARCH%|${arch}|g;
@@ -929,7 +942,6 @@ make_prepare() {
 
     # Create packages list
     msg_info "Creating a list of installed packages on live-enviroment..."
-    pacman-key --init
     pacman -Q --sysroot "${airootfs_dir}" | tee "${isofs_dir}/${install_dir}/pkglist.${arch}.txt" "${build_dir}/packages-full.list" > /dev/null
 
     # Cleanup
@@ -962,13 +974,13 @@ make_prepare() {
     return 0
 }
 
-make_alteriso_info(){
+make_uhurulive_info(){
     # iso version info
     if [[ "${include_info}" = true ]]; then
-        local _info_file="${isofs_dir}/alteriso-info" _version="${iso_version}"
+        local _info_file="${isofs_dir}/uhurulive-info" _version="${iso_version}"
         remove "${_info_file}"; touch "${_info_file}"
-        [[ -d "${script_path}/.git" ]] && [[ "${gitversion}" = false ]] && _version="${iso_version}-${gitrev}"
-        "${tools_dir}/alteriso-info.sh" -a "${arch}" -b "${boot_splash}" -c "${channel_name%.add}" -d "${iso_publisher}" -k "${kernel}" -o "${os_name}" -p "${password}" -u "${username}" -v "${_version}" -m "$(printf "%s," "${modules[@]}")" > "${_info_file}"
+
+        "${tools_dir}/uhurulive-info.sh" -a "${arch}" -b "${boot_splash}" -c "${channel_name%.add}" -d "${iso_publisher}" -k "${kernel}" -o "${os_name}" -p "${password}" -u "${username}" -v "${_version}" -m "$(printf "%s," "${modules[@]}")" > "${_info_file}"
     fi
 
     return 0
@@ -1021,7 +1033,7 @@ make_iso() {
 
 
 # Parse options
-ARGUMENT=("${DEFAULT_ARGUMENT[@]}" "${@}") OPTS=("a:" "b" "c:" "d" "e" "g:" "h" "j" "k:" "l:" "o:" "p:" "r" "t:" "u:" "w:" "x") OPTL=("arch:" "boot-splash" "comp-type:" "debug" "cleaning" "cleanup" "gpgkey:" "help" "lang:" "japanese" "kernel:" "out:" "password:" "comp-opts:" "user:" "work:" "bash-debug" "nocolor" "noconfirm" "nodepend" "gitversion" "msgdebug" "noloopmod" "tarball" "noiso" "noaur" "nochkver" "channellist" "config:" "noefi" "nodebug" "nosigcheck" "normwork" "log" "logpath:" "nolog" "nopkgbuild" "pacman-debug" "confirm" "tar-type:" "tar-opts:" "add-module:" "nogitversion" "cowspace:" "rerun" "depend" "loopmod")
+ARGUMENT=("${DEFAULT_ARGUMENT[@]}" "${@}") OPTS=("a:" "b" "c:" "d" "e" "g:" "h" "j" "k:" "l:" "o:" "p:" "r" "t:" "u:" "w:" "x") OPTL=("arch:" "boot-splash" "comp-type:" "debug" "cleaning" "cleanup" "gpgkey:" "help" "lang:" "japanese" "kernel:" "out:" "password:" "comp-opts:" "user:" "work:" "bash-debug" "nocolor" "noconfirm" "nodepend" "msgdebug" "noloopmod" "tarball" "noiso" "noaur" "nochkver" "channellist" "config:" "noefi" "nodebug" "nosigcheck" "normwork" "log" "logpath:" "nolog" "nopkgbuild" "pacman-debug" "confirm" "tar-type:" "tar-opts:" "add-module:" "cowspace:" "rerun" "depend" "loopmod")
 GETOPT=(-o "$(printf "%s," "${OPTS[@]}")" -l "$(printf "%s," "${OPTL[@]}")" -- "${ARGUMENT[@]}")
 getopt -Q "${GETOPT[@]}" || exit 1 # 引数エラー判定
 readarray -t OPT < <(getopt "${GETOPT[@]}") # 配列に代入
@@ -1098,7 +1110,6 @@ while true; do
         -r | --tarball              ) tarball=true       && shift 1 ;;
         -w | --work                 ) work_dir="${2}"    && shift 2 ;;
         -x | --bash-debug           ) bash_debug=true    && shift 1 ;;
-        --gitversion                ) gitversion=true    && shift 1 ;;
         --noconfirm                 ) noconfirm=true     && shift 1 ;;
         --confirm                   ) noconfirm=false    && shift 1 ;;
         --nodepend                  ) nodepend=true      && shift 1 ;;
@@ -1117,7 +1128,6 @@ while true; do
         --log                       ) logging=true       && shift 1 ;;
         --nolog                     ) logging=false      && shift 1 ;;
         --nopkgbuild                ) nopkgbuild=true    && shift 1 ;;
-        --nogitversion              ) gitversion=false   && shift 1 ;;
         --cowspace                  ) cowspace="${2}"    && shift 2 ;;
         --rerun                     ) rerun=true         && shift 1 ;;
         --depend                    ) nodepend=false     && shift 1 ;;
@@ -1147,7 +1157,7 @@ msg_debug "Use the default configuration file (${defaultconfig})."
 
 # Check for a valid channel name
 if [[ -n "${1+SET}" ]]; then
-    case "$(bash "${tools_dir}/channel.sh" --version "${alteriso_version}" -n check "${1}"; printf "%d" "${?}")" in
+    case "$(bash "${tools_dir}/channel.sh" --version "${uhurulive_version}" -n check "${1}"; printf "%d" "${?}")" in
         "2")
             msg_error "Invalid channel ${1}" "1"
             ;;
@@ -1166,7 +1176,6 @@ fi
 
 # Set vars
 build_dir="${work_dir}/build/${arch}" cache_dir="${work_dir}/cache/${arch}" airootfs_dir="${build_dir}/airootfs" isofs_dir="${build_dir}/iso" lockfile_dir="${build_dir}/lockfile" preset_dir="${script_path}/presets"
-gitrev="$(cd "${script_path}"; git rev-parse --short HEAD)"
 
 # Create dir
 for _dir in build_dir cache_dir airootfs_dir isofs_dir lockfile_dir out_dir; do
@@ -1186,14 +1195,6 @@ fi
 
 # Check channel version
 msg_debug "channel path is ${channel_dir}"
-if [[ ! "$(bash "${tools_dir}/channel.sh" --version "${alteriso_version}" ver "${channel_name}" | cut -d "." -f 1)" = "$(echo "${alteriso_version}" | cut -d "." -f 1)" ]] && [[ "${nochkver}" = false ]]; then
-    msg_error "This channel does not support Alter ISO 3."
-    if [[ -d "${script_path}/.git" ]]; then
-        msg_error "Please run \"git checkout alteriso-2\"" "1"
-    else
-        msg_error "Please download old version here.\nhttps://github.com/FascodeNet/alterlinux/releases" "1"
-    fi
-fi
 
 prepare_env
 prepare_build
@@ -1201,8 +1202,8 @@ show_settings
 run_once make_pacman_conf
 run_once make_basefs # Mount airootfs
 run_once make_packages_repo
-[[ "${noaur}" = false ]] && run_once make_packages_aur
 [[ "${nopkgbuild}" = false ]] && run_once make_pkgbuild
+[[ "${noaur}" = false ]] && run_once make_packages_aur
 run_once make_customize_airootfs
 run_once make_setup_mkinitcpio
 [[ "${tarball}" = true ]] && run_once make_tarball
@@ -1215,7 +1216,7 @@ if [[ "${noiso}" = false ]]; then
         run_once make_efi
         run_once make_efiboot
     fi
-    run_once make_alteriso_info
+    run_once make_uhurulive_info
     run_once make_prepare
     run_once make_overisofs
     run_once make_iso

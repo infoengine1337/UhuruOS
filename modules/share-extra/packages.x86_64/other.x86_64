@@ -1,11 +1,11 @@
 #
-# Alter Linux package list
+# infoengine1337 UhuruOS package list
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 
 
@@ -20,10 +20,7 @@ gvfs-smb
 
 
 #-- boot manager --#
-# grub-theme-vimix-alter
 grub-theme-vimix
-#grub-customizer
-
 
 #-- documents --#
 man-db
@@ -41,6 +38,3 @@ htop
 #-- text editor --#
 nano
 vim
-
-#-- graphic editor --#
-pluma

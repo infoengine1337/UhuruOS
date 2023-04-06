@@ -1,5 +1,4 @@
 [Configuration]
-FontName=SauceCodePro Nerd Font 12
 MiscAlwaysShowTabs=FALSE
 MiscBell=FALSE
 MiscBellUrgent=FALSE
@@ -27,7 +26,6 @@ MiscSlimTabs=FALSE
 MiscNewTabAdjacent=FALSE
 MiscSearchDialogOpacity=100
 MiscShowUnsafePasteDialog=TRUE
-ColorBackground=#38383c3c4a4a
 DropdownKeepOpenDefault=TRUE
 DropdownWidth=100
 DropdownOpacity=75
@@ -36,3 +34,13 @@ DropdownPositionVertical=100
 DropdownMoveToActive=FALSE
 DropdownAlwaysShowTabs=FALSE
 DropdownStatusIcon=FALSE
+MiscRightClickAction=TERMINAL_RIGHT_CLICK_ACTION_CONTEXT_MENU
+FontUseSystem=TRUE
+BackgroundMode=TERMINAL_BACKGROUND_TRANSPARENT
+BackgroundDarkness=0.666666
+ScrollingLines=9100
+ColorForeground=#ffffffffffff
+ColorPalette=rgb(0,0,0);rgb(170,0,0);rgb(0,170,0);rgb(170,85,0);rgb(25,111,223);rgb(170,0,170);rgb(0,170,170);rgb(170,170,170);rgb(85,85,85);rgb(255,85,85);rgb(85,255,85);rgb(255,255,85);rgb(85,169,255);rgb(255,85,255);rgb(85,255,255);rgb(255,255,255)
+ColorBackground=#0fed10ff2fc9
+TabActivityColor=#962f4c984c98
+

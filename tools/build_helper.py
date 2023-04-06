@@ -140,7 +140,7 @@ class MainWindow(Gtk.Window):
         # username
         username_label = Gtk.Label(label="Username")
         self.username_entry = Gtk.Entry()
-        self.username_entry.set_text("alter")
+        self.username_entry.set_text("uhuru")
         username_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
         username_box.set_homogeneous(True)
         username_box.pack_start(username_label, True, True, 0)
@@ -150,7 +150,7 @@ class MainWindow(Gtk.Window):
         password_label = Gtk.Label(label="Password")
         self.password_entry = Gtk.Entry()
         self.password_entry.set_visibility(False)
-        self.password_entry.set_text("alter")
+        self.password_entry.set_text("uhuru")
         self.password_button = Gtk.Button.new_with_label("Show Password")
         self.password_button.connect("clicked", self.on_password_clicked)
         password_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
@@ -277,8 +277,8 @@ class MainWindow(Gtk.Window):
         self.arch_combo.set_active(0)
         self._reset()
         self.comp_combo.set_active(5)
-        self.username_entry.set_text("alter")
-        self.password_entry.set_text("alter")
+        self.username_entry.set_text("uhuru")
+        self.password_entry.set_text("uhuru")
     
     def _reset(self):
         arch = self.arch_combo.get_model()[self.arch_combo.get_active_iter()][1]

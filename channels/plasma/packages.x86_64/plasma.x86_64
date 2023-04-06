@@ -1,0 +1,25 @@
+#
+# infoengine1337 UhuruOS package list
+#
+# lap1sid
+# Known As: @Pixel_3a
+# Email  : lap1sid@noreply
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# KDE Plasma 5 Desktop Environment
+
+
+#-- KDE Plasma 5 base --#
+plasma-meta
+dolphin
+konsole
+kde-gtk-config
+ark
+
+#-- KDE Plasma 5 config --#
+#uhurulinux-plasmalnf
+
+
+#-- KDE Plasma 5 Extensions --#
+kdeplasma-addons

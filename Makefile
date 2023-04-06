@@ -67,7 +67,7 @@ menuconfig-script/channel_choice:
 
 build_option:
 	@if [ ! -f .config ]; then make menuconfig ; fi
-	${CURRENT_DIR}/tools/menuconf-to-alterconf.sh ${CURRENT_DIR}/.build_option
+	${CURRENT_DIR}/tools/menuconf-to-uhuruconf.sh ${CURRENT_DIR}/.build_option
 
 clean:
 	@sudo ${CURRENT_DIR}/${BUILD_SCRIPT} --noconfirm --debug clean
@@ -77,7 +77,7 @@ build:build_option
 	@sudo ${CURRENT_DIR}/${BUILD_SCRIPT} ${BUILD_OPTION}
 
 keyring::
-	@sudo ${CURRENT_DIR}/tools/keyring.sh --alter-add --arch-add
+	@sudo ${CURRENT_DIR}/tools/keyring.sh --uhuru-add --arch-add
 
 wizard:
 	@sudo ${CURRENT_DIR}/tools/wizard.sh

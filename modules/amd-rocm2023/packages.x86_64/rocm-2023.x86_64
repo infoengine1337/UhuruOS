@@ -1,0 +1,26 @@
+#
+# infoengine1337 UhuruOS package list
+#
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# amd-rocm packages
+
+rocm-clang-ocl
+rocm-cmake
+rocm-core
+rocm-device-libs
+rocm-hip-libraries
+rocm-hip-runtime
+rocm-hip-sdk
+rocm-language-runtime
+rocm-llvm
+rocm-ml-libraries
+rocm-ml-sdk
+rocm-opencl-runtime
+rocm-opencl-sdk
+rocm-smi-lib
+rocminfo

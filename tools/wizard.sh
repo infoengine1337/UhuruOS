@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 set -e
 
 :<< TEXT
@@ -148,7 +148,7 @@ Function_Global_Main_check_required_files () {
         "tools/locale.sh"
         "tools/kernel.sh"
         "tools/pkglist.sh"
-        "tools/alteriso-info.sh"
+        "tools/uhurulive-info.sh"
         "tools/package.py"
         "tools/msg.sh"
         "system/kernel-i686"
@@ -217,14 +217,14 @@ Function_Global_Main_guide_to_the_web () {
     if [[ "${Var_Global_Wizard_Option_language}"  = "jp" ]]; then
         msg "wizard.sh ではビルドオプションの生成以外にもパッケージのインストールやキーリングのインストールなど様々なことを行います。"
         msg "もし既に環境が構築されておりそれらの操作が必要ない場合は、以下のサイトによるジェネレータも使用することができます。"
-        msg "http://hayao.fascode.net/alteriso-options-generator/"
+        msg "http://admin.noreply/uhurulive-options-generator/"
         echo
     fi
 }
 
 Function_Global_Main_run_keyring.sh () {
     local Var_Local_input_yes_or_no
-    msg_n "Alter Linuxの鍵を追加しますか？（y/N）: " "Are you sure you want to add the Alter Linux key? (y/N):"
+    msg_n "infoengine1337 UhuruOSの鍵を追加しますか？（y/N）: " "Are you sure you want to add the infoengine1337 UhuruOS key? (y/N):"
     read -r Var_Local_input_yes_or_no
     if ${Var_Global_Wizard_Option_nobuild}; then
         msg \
@@ -232,7 +232,7 @@ Function_Global_Main_run_keyring.sh () {
             "You have entered ${Var_Local_input_yes_or_no}. Simulation mode is enabled and will be skipped."
     else
         case "${Var_Local_input_yes_or_no}" in
-            "y" | "Y" | "yes" | "Yes" | "YES" ) sudo "${Var_Global_Wizard_Env_script_path}/keyring.sh" --alter-add   ;;
+            "y" | "Y" | "yes" | "Yes" | "YES" ) sudo "${Var_Global_Wizard_Env_script_path}/keyring.sh" --uhuru-add   ;;
             "n" | "N" | "no"  | "No"  | "NO"  ) return 0                                       ;;
             *                                 ) Function_Global_Main_run_keyring.sh            ;;
         esac

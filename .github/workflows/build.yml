@@ -1,0 +1,152 @@
+name: Build UhuruOS Image (channels == xfce_yor)
+
+on:
+  pull_request:
+    branches: [ dev ]
+
+  schedule:
+    - cron: '30 8,17 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+      volumes:
+        - /github/home:/root/home
+      options: "--privileged"
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Modify mirrorlist
+        run: |
+          echo 'Server = https://mirrors.kernel.org/archlinux/$repo/os/$arch' > /etc/pacman.d/mirrorlist
+          echo 'Server = https://mirror.osbeck.com/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://mirror.misakamikoto.network/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://ftp.lysator.liu.se/pub/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://ftp.jaist.ac.jp/pub/Linux/ArchLinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://mirror.moson.org/arch/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://theswissbay.ch/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://ftp.acc.umu.se/mirror/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://mirror.lyrahosting.com/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://mirror.0x.sg/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://mirrors.melbourne.co.uk/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://download.nus.edu.sg/mirror/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://mirror.bytemark.co.uk/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://mirrors.nic.cz/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://ftp.halifax.rwth-aachen.de/archlinux/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+          echo 'Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch' >> /etc/pacman.d/mirrorlist
+
+      - name: Install Required Packages
+        run: |
+          pacman -Syyu --noconfirm --overwrite="*" procps gcc neofetch unzip p7zip curl rsync wget git make fakeroot sudo python3 base-devel cmake ninja qt5-base arch-install-scripts pyalpm squashfs-tools libisoburn dosfstools
+
+      - name: Information about running specs
+        run: |
+          uname -a 2> /dev/null || true
+          lspci -v | grep VGA 2> /dev/null || true
+          lspci -v | grep Ethernet 2> /dev/null || true
+          lspci -v | grep Audio 2> /dev/null || true
+          cat /proc/cpuinfo 2> /dev/null || true
+          lscpu 2> /dev/null || true
+          neofetch 2> /dev/null || true
+          free -tm 2> /dev/null || true
+          lsblk 2> /dev/null || true
+          lsusb -v 2> /dev/null || true
+          lspci -v 2> /dev/null || true
+          gcc -march=native -Q --help=target 2> /dev/null || true
+          lshw -short 2> /dev/null || true
+
+      - name: Install CachyOS keys and Fetch cachyos-mirrorlist
+        run: |
+          wget -O cachyos-keyring-latest-any.pkg.tar.zst https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-keyring-2-1-any.pkg.tar.zst && \
+          pacman --noconfirm --overwrite="*" -U cachyos-keyring-latest-any.pkg.tar.zst
+          wget -P /etc/pacman.d/ -O cachyos-mirrorlist https://raw.githubusercontent.com/CachyOS/CachyOS-PKGBUILDS/master/cachyos-mirrorlist/cachyos-mirrorlist
+
+      - name: Install Arch keys
+        run: |
+          wget -O archlinux-keyring-latest-any.pkg.tar.zst https://archlinux.org/packages/core/any/archlinux-keyring/download/ && \
+          pacman --noconfirm --overwrite="*" -U archlinux-keyring-latest-any.pkg.tar.zst
+          wget -P /etc/pacman.d/ -O arch-mirrorlist https://raw.githubusercontent.com/archlinux/archlinux-docker/master/rootfs/etc/pacman.d/mirrorlist
+
+      - name: Install Archstrike keys and Fetch archstrike-mirrorlist
+        run: |
+          wget -O archstrike-keyring-latest-any.pkg.tar.xz https://mirror.archstrike.org/x86_64/archstrike/archstrike-keyring-20200930-2-any.pkg.tar.xz && \
+          pacman --noconfirm --overwrite="*" -U archstrike-keyring-latest-any.pkg.tar.xz
+          wget -P /etc/pacman.d/ -O archstrike-mirrorlist https://www.archstrike.org/mirrorlist/generate?p=https&t=official,community
+
+      - name: Install BlackArch keys and Fetch blackarch-mirrorlist
+        run: |
+          wget https://www.blackarch.org/keyring/blackarch-keyring.pkg.tar.xz && \
+          pacman --noconfirm --overwrite="*" -U blackarch-keyring.pkg.tar.xz
+          wget -P /etc/pacman.d/ -O blackarch-mirrorlist https://blackarch.org/blackarch-mirrorlist
+
+      - name: Install chaotic keys and Fetch chaotic-aur-mirrorlist
+        run: |
+          pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
+          pacman-key --lsign-key FBA220DFC880C036
+          wget -O chaotic-keyring-latest-any.pkg.tar.zst https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst && \
+          pacman --noconfirm --overwrite="*" -U chaotic-keyring-latest-any.pkg.tar.zst
+          wget -P /etc/pacman.d/ -O chaotic-mirrorlist https://raw.githubusercontent.com/chaotic-aur/pkgbuild-chaotic-mirrorlist/main/mirrorlist
+
+      - name: Populate keyrings
+        run: |
+          pacman-key --init
+          pacman-key --populate
+
+      - name: Build UhuruOS (xfce_yor)
+        run: |
+          ./build.sh --noloopmod --noconfirm --cleanup xfce
+
+      - name: Prepare artifact
+        run: |
+          pushd ./out
+
+          # check geq 1890(MiB) -> 7za a <dst> <src> -mx=0 -v630m if oversized
+          find . -mindepth 1 -type f -size +1890M 2> /dev/null | \
+             xargs -I{} 7za a {}.7z {} -mx=0 -v630m \
+             || true
+
+          # after then delete geq 1890(MiB)
+          find . -mindepth 1 -type f -size +1890M -delete 2> /dev/null || true
+
+          popd
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: assets-for-download
+          path: out
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: label
+        id: label
+        run: |
+          echo "tag_name=$(echo "$(date +'%s' | cut -c 1-6)00000")" >> $GITHUB_OUTPUT
+          echo "name=$(date)" >> $GITHUB_OUTPUT
+          echo "body=$(echo "Used VM built on $(uname -a)")" >> $GITHUB_OUTPUT
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: assets-for-download
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.label.outputs.tag_name }}
+          name: ${{ steps.label.outputs.name }}
+          body: ${{ steps.label.outputs.body }}
+          draft: false
+          prerelease: false
+          files: |
+           [0-z]*.iso.*

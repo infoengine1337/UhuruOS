@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 set -eu
 
@@ -93,7 +93,7 @@ for arch in "${archs[@]}"; do
             load_config "${channel}/config.any" "${channel}/config.${arch}"
             if [[ -n "${include_extra+SET}" ]]; then
                 if [[ "${include_extra}" = true ]]; then
-                    modules=("base" "share" "share-extra" "calamares" "zsh-powerline")
+                    modules=("base" "share" "share-extra" "calamares" "dash-powerline")
                 else
                     modules=("base" "share")
                 fi

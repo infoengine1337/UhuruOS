@@ -1,0 +1,12 @@
+# useradd defaults file for infoengine1337 UhuruOS
+# original changes by TomK
+
+# In infoengine1337 UhuruOS, the default shell is changed to /bin/bash from the default of ArchLinux (by Hayao)
+
+GROUP=users
+HOME=/home
+INACTIVE=-1
+EXPIRE=
+SHELL=/bin/bash
+SKEL=/etc/skel
+CREATE_MAIL_SPOOL=no

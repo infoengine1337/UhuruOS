@@ -1,0 +1,16 @@
+infoengine1337 UhuruOS LXDE
+===========
+
+Japanese:
+infoengine1337 UhuruOS LXDEはGUIを搭載した中では最も軽量です。
+システム設定ツールと最小限のGTKソフトウェアをが入っています。
+LXDEはinfoengine1337 UhuruOS独自のカスタマイズがされています。
+GTKテーマとしてAdapta、アイコンテーマとしてPapirusが使用されています。
+チャンネル名は lxde です。
+
+English:
+infoengine1337 UhuruOS LXDE is the lightest GUI built-in.
+Contains system configuration tools and minimal GTK software.
+LXDE is customized for infoengine1337 UhuruOS.
+Adapta is used as the GTK theme and Papirus is used as the icon theme.
+The channel name is lxde.

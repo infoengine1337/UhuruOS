@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# config
+#
+# Overwrites the first to read and set the build script
+# This configuration file follows the bash syntax.
+#
+
+
+# OS name used for startup screen, etc.
+os_name="Madeleine OS"
+
+# Image file label
+iso_label="Madeine_$(date +%Y%m%d)"
+
+# Image file creator information
+iso_publisher='Yahada Hayao <https://twitter.com/admin>'
+
+# Image file name (not file name)
+iso_application="Madeleine OS Live/Rescue CD"
+# Set the user's default shell.
+usershell="/bin/bash"
+
+# Modules to include
+# An array of module directory names to include.
+# This setting cannot be changed by an argument.
+modules=(
+    "cli-modules"
+    "lightdm-modules"
+    "gtk-modules"
+)

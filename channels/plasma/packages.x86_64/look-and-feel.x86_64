@@ -1,0 +1,31 @@
+#
+# infoengine1337 UhuruOS package list
+#
+# lap1sid
+# Known As: @Pixel_3a
+# Email  : lap1sid@noreply
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# look and feel
+
+
+# font
+noto-fonts
+noto-fonts-cjk
+noto-fonts-emoji
+
+
+# icon
+papirus-icon-theme
+
+
+# Advanced Theme Manager
+kvantum-qt5
+
+
+# theme
+materia-gtk-theme
+materia-kde
+kvantum-theme-materia
+#arc-gtk-theme

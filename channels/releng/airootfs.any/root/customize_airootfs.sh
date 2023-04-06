@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 
 set -e -u
@@ -12,13 +12,13 @@ set -e -u
 
 # Default value
 # All values can be changed by arguments.
-password=alter
+password=uhuru
 boot_splash=false
 kernel_config_line=("zen" "vmlinuz-linux-zen" "linux-zen")
-theme_name=alter-logo
-username='alter'
-os_name="Alter Linux"
-install_dir="alter"
+theme_name=uhuru-logo
+username='uhuru'
+os_name="infoengine1337 UhuruOS"
+install_dir="uhuru"
 usershell="/bin/bash"
 debug=false
 timezone="UTC"
@@ -75,7 +75,7 @@ locale-gen
 
 ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 
-usermod -s /usr/bin/zsh root
+usermod -s /usr/bin/bash root
 cp -aT /etc/skel/ /root/
 
 sed -i 's/#\(PermitRootLogin \).\+/\1yes/' /etc/ssh/sshd_config
@@ -88,7 +88,7 @@ fi
 # Enable services.
 systemctl enable NetworkManager
 systemctl enable pacman-init.service
-#systemctl enable alteriso-reflector.service
+#systemctl enable uhurulive-reflector.service
 #systemctl disable reflector.service
 systemctl set-default multi-user.target
 
@@ -97,5 +97,5 @@ touch /etc/arch-release
 
 remove "/etc/plymouth"
 remove "/usr/share/calamares"
-remove "/home/hayao/Git/alterlinux/channels/share/airootfs.any/etc/polkit-1/rules.d/01-nopasswork.rules"
-remove "/home/hayao/Git/alterlinux/channels/share/airootfs.any/etc/polkit-1/rules.d/10-enable-mount.rules"
+remove "/home/admin/Git/uhurulinux/channels/share/airootfs.any/etc/polkit-1/rules.d/01-nopasswork.rules"
+remove "/home/admin/Git/uhurulinux/channels/share/airootfs.any/etc/polkit-1/rules.d/10-enable-mount.rules"

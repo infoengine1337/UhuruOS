@@ -1,0 +1,25 @@
+#
+# infoengine1337 UhuruOS package list
+# lap1sid
+# Known As: @Pixel_3a
+# Email  : lap1sid@noreply
+#
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+
+#-- system monitor --#
+ksysguard
+
+#-- text editor --#
+kate
+
+#-- other --#
+htop
+packagekit-qt5
+
+#-- printer --#
+print-manager

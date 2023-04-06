@@ -1,18 +1,18 @@
 #
-# Alter Linux package list
+# infoengine1337 UhuruOS package list
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 # File System
 
 
 btrfs-progs
 dosfstools
-# exfat-utils archiso v47で exfatprogs に置き換えられました
+# exfat-utils uhurulive v47で exfatprogs に置き換えられました
 exfatprogs
 f2fs-tools
 jfsutils

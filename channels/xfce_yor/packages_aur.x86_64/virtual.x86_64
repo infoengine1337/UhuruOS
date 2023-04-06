@@ -1,0 +1,8 @@
+#
+# Uhuru OS package list
+#
+# infoengine1337
+# Known As: @infoengine1337
+
+#-- VirtualBox --#
+virtualbox-bin

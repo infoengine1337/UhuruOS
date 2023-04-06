@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/sh
 #
-# Yamada Hayao
-# Twitter: @Hayao0819
-# Email  : hayao@fascode.net
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
 #
-# (c) 2019-2021 Fascode Network.
+# (c) 1998-2140 team-silencesuzuka
 #
 set -e
 
@@ -86,7 +86,7 @@ pacman-key --populate
 #sed -i "s/#Server/Server/g" "/etc/pacman.d/mirrorlist"
 
 # Set pacman args
-pacman_args=("--config" "/etc/alteriso-pacman.conf" "--noconfirm")
+pacman_args=("--config" "/etc/uhurulive-pacman.conf" "--noconfirm")
 if [[ "${pacman_debug}" = true ]]; then
     pacman_args+=("--debug")
 fi
@@ -127,5 +127,5 @@ pacman -Sccc "${pacman_args[@]}"
 userdel "${build_username}"
 remove "${pkgbuild_dir}"
 remove "/etc/sudoers.d/pkgbuild"
-remove "/etc/alteriso-pacman.conf"
+remove "/etc/uhurulive-pacman.conf"
 remove "/var/cache/pacman/pkg/"

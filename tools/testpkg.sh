@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # 現在のスクリプトのパス
 script_path="$( cd -P "$( dirname "$(readlink -f "$0")" )" && cd .. && pwd )"
@@ -30,7 +30,7 @@ function searchpkg(){
         return 0
     fi
     msg_debug "  In YamaD repo ..."
-    if [[ -n "$(curl -s https://repo.dyama.net/alter-stable/x86_64/ | grep '\./' | grep "pkg.tar" | sed "s|	||g" | cut -d '"' -f 2 | xargs -If basename f | grep "${1}")" ]]; then
+    if [[ -n "$(curl -s https://repo.dyama.net/uhuru-stable/x86_64/ | grep '\./' | grep "pkg.tar" | sed "s|	||g" | cut -d '"' -f 2 | xargs -If basename f | grep "${1}")" ]]; then
         return 0
     fi
     return 1

@@ -71,7 +71,7 @@
 # the obligatory `pattern` key, which is a regular expression that is
 # matched against the full argument part of the command. The default
 # behavior is to just proxy the line through if matched, but it can be
-# altered with these keys:
+# uhurued with these keys:
 #
 # * `replacement`: this rewrites the arguments. The value is a Python
 #   format string (str.format()) which will be given the match groups

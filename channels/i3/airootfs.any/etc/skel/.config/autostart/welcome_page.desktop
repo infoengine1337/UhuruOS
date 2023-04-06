@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Name=Welcome to infoengine1337 UhuruOS
+Comment=Displays the infoengine1337 UhuruOS welcome page.
+Icon=utilities-terminal
+Exec=/usr/bin/uhurulinux-welcome-page -l --uhurulive
+X-GNOME-Autostart-enabled=true
+Type=Application
+RunHook=0
+StartupNotify=false
+Terminal=false
+Hidden=false

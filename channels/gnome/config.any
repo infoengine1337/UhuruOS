@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# config
+#
+# Overwrites the first to read and set the build script
+# This configuration file follows the bash syntax.
+#
+
+# Set the user's default shell.
+usershell="/bin/bash"
+
+# aur Warning
+if [[ "${noaur-""}" = true ]]; then
+    msg_warn "===== Warning of Gnome channel ====="
+    msg_warn "If noaur is true, many extensions will not be installed."
+    msg_warn "===================================="
+fi
+
+# Modules to include
+# An array of module directory names to include.
+# This setting cannot be changed by an argument.
+modules=(
+    "cli-modules"
+    "gdm"
+    "gtk-modules"
+)

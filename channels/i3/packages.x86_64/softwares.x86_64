@@ -1,0 +1,29 @@
+#
+# infoengine1337 UhuruOS i3wm edition package list
+#
+# Watasuke
+# Known As: @Watasuke102
+# Email  : Watasuke102@gmail.com
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# some softwares
+
+# file manager
+thunar
+file-roller
+
+# notification daemon
+dunst
+
+# clipboard
+xfce4-clipman-plugin
+
+# screenshot
+xfce4-screenshooter
+
+# for sysmenu
+arandr
+
+# Screen lock
+light-locker

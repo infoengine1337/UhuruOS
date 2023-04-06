@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Replace logo.
+rm -rf  "/usr/share/lxde/images/logout-banner.png"
+ln -s "/usr/share/lxde/images/uhurulinux.png" "/usr/share/lxde/images/logout-banner.png"
+chmod 644 "/usr/share/lxde/images/logout-banner.png"

@@ -17,18 +17,13 @@
 ## Overview
 
 UhuruOS is a Distro focused on enhancement several types of security based on Arch Linux.
-
 ![](../images/screenshot/UhuruOS_screenshot.png)  
-Uhuru is forked from Alter Linux to make use of Alter's existing resources such as coloring and configurations.  
-Please visit [this page](https://github.com/FascodeNet/alterlinux).  
-The credit goes to Fascode Network, maintainers of Alter.
 
 ## Features
 
 - Manjaro Repos (for stable updates)
-- Beautiful-Looking (from [Alter Linux](https://github.com/FascodeNet/alterlinux))
 - Pre-installed [BlackArch](https://blackarch.org/tools.html) Repos
-- Graceful theme [(Midnight-Night Theme)](https://github.com/i-mint/midnight)
+- Beautiful-Looking, Graceful theme [(Midnight-Night Theme)](https://github.com/i-mint/midnight)
 - Live boot (No need to install, leaves no digital footprint)
 
 ## Download

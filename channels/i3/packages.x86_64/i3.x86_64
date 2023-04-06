@@ -1,0 +1,32 @@
+#
+# infoengine1337 UhuruOS i3wm edition package list
+#
+# Watasuke
+# Known As: @Watasuke102
+# Email  : Watasuke102@gmail.com
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# i3wm relation packages
+
+# xorg
+xorg-xrandr
+
+# i3wm
+i3-gaps
+nitrogen
+picom
+conky
+polybar
+
+# launcher
+rofi
+
+# theme manager
+uhurulinux-i3-manager
+
+# autostart
+dex
+
+# Theme
+adapta-gtk-theme

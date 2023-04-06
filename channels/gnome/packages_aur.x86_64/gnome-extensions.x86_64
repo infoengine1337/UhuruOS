@@ -1,0 +1,18 @@
+#
+# infoengine1337 UhuruOS package list
+#
+# silencesuzuka
+# Known As: @admin
+# Email  : admin@noreply
+#
+# (c) 1998-2140 team-silencesuzuka
+#
+# Gnome extensions
+
+chrome-gnome-shell
+
+gnome-shell-extension-arc-menu
+gnome-shell-extension-clipboard-indicator
+gnome-shell-extension-coverflow-alt-tab
+gnome-shell-extension-dash-to-panel
+gnome-shell-extension-desktop-icons-ng

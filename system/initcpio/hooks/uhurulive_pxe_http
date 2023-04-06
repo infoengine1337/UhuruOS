@@ -1,0 +1,77 @@
+#!/usr/bin/ash
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+run_hook() {
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if [ -n "${ip}" ] && [ -n "${uhurulive_http_srv}" ]; then
+
+        # booting with http is always copy-to-ram, so set here to make sure
+        # addresses are flushed and interface is set down
+        export copytoram="y"
+
+        uhurulive_http_srv=$(eval echo "${uhurulive_http_srv}")
+        [ -z "${uhurulive_http_spc}" ] && uhurulive_http_spc="128M"
+
+        export mount_handler="uhurulive_pxe_http_mount_handler"
+    fi
+}
+
+# Fetch a file with CURL
+#
+# $1 URL
+# $2 Destination directory inside httpspace/${uhurulivebasedir}
+_curl_get() {
+    local _url="${1}"
+    local _dst="${2}"
+
+    msg ":: Downloading '${_url}'"
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if ! curl -L -f -o "/run/uhurulive/httpspace/${uhurulivebasedir}${_dst}/${_url##*/}" --create-dirs "${_url}"; then
+        echo "ERROR: Downloading '${_url}'"
+        echo "   Falling back to interactive prompt"
+        echo "   You can try to fix the problem manually, log out when you are finished"
+        launch_interactive_shell
+    fi
+}
+
+uhurulive_pxe_http_mount_handler() {
+    newroot="${1}"
+    local img_type="sfs"
+
+    msg ":: Mounting /run/uhurulive/httpspace (tmpfs) filesystem, size='${uhurulive_http_spc}'"
+    mount --mkdir -t tmpfs -o size="${uhurulive_http_spc}",mode=0755 httpspace "/run/uhurulive/httpspace"
+
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if ! curl -L -f -o /dev/null -s -r 0-0 "${uhurulive_http_srv}${uhurulivebasedir}/${arch}/airootfs.sfs"; then
+        if curl -L -f -o /dev/null -s -r 0-0 "${uhurulive_http_srv}${uhurulivebasedir}/${arch}/airootfs.erofs"; then
+            img_type="erofs"
+        fi
+    fi
+    _curl_get "${uhurulive_http_srv}${uhurulivebasedir}/${arch}/airootfs.${img_type}" "/${arch}"
+
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if [ "${checksum}" = "y" ]; then
+        _curl_get "${uhurulive_http_srv}${uhurulivebasedir}/${arch}/airootfs.sha512" "/${arch}"
+    fi
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if [ "${verify}" = "y" ]; then
+        _curl_get "${uhurulive_http_srv}${uhurulivebasedir}/${arch}/airootfs.${img_type}.sig" "/${arch}"
+    fi
+    # shellcheck disable=SC2154
+    # defined via initcpio's parse_cmdline()
+    if [ "${cms_verify}" = "y" ]; then
+        _curl_get "${uhurulive_http_srv}${uhurulivebasedir}/${arch}/airootfs.${img_type}.cms.sig" "/${arch}"
+    fi
+
+    mount --mkdir -o bind /run/uhurulive/httpspace /run/uhurulive/bootmnt
+
+    uhurulive_mount_handler "${newroot}"
+}
+
+# vim: set ft=sh:
