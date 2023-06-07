@@ -19,3 +19,6 @@ librewolf-bin
 #-- Zeronet --#
 zeronet-git
 #zeronet
+
+#-- shadowsocks --#
+shadowsocks-rust
