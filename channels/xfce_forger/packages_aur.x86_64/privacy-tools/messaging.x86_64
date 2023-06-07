@@ -7,6 +7,3 @@
 #-- Signal and Session --#
 session-desktop-bin
 
-#-- Gajim OMEMO Plugin --#
-gajim-plugin-omemo
-
