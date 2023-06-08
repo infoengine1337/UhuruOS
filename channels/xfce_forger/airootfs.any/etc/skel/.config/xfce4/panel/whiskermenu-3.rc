@@ -1,4 +1,4 @@
-favorites=thunar.desktop,pluma.desktop,xfce4-terminal.desktop,librewolf.desktop,start-zeronet.desktop,telegramdesktop.desktop,signal-desktop.desktop,session-desktop.desktop,org.gajim.Gajim.desktop,electrum.desktop,electrum-ltc.desktop,electron-cash.desktop,monero-gui.desktop,feather.desktop,veracrypt.desktop
+favorites=thunar.desktop,pluma.desktop,xfce4-terminal.desktop,librewolf.desktop,start-zeronet.desktop,org.telegram.desktop.desktop,signal-desktop.desktop,session-desktop.desktop,im.dino.Dino.desktop,electrum.desktop,electrum-ltc.desktop,electron-cash.desktop,monero-gui.desktop,mymonero.desktop,veracrypt.desktop
 recent=
 button-title=Uhuru
 button-icon=/usr/share/icons/hicolor/96x96/apps/uhuru.png

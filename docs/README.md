@@ -52,9 +52,9 @@ Some utilities are based on [Obscurix Linux](https://github.com/Obscurix/Obscuri
 - Zeronet - a decentralized peer-2-peer network
 - ProxyChains - a utility for connecting with proxy
 - Thunderbird - standard email client
-- Gajim - standard XMPP client
+- Dino - standard XMPP client
 - Messangers (Telegram, Signal, Session)
-- Crypto Wallet (Electrum(Bitcoin), Electrum-ltc(Litecoin), ElectronCash(Bitcoin-cash), Monero-GUI, feather-wallet(monero))
+- Crypto Wallet (Electrum(Bitcoin), Electrum-ltc(Litecoin), ElectronCash(Bitcoin-cash), Monero-GUI, MyMonero(monero))
 - VeraCrypt - storage encrypting utility
 - And more...
 
