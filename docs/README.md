@@ -54,7 +54,7 @@ Some utilities are based on [Obscurix Linux](https://github.com/Obscurix/Obscuri
 - Thunderbird - standard email client
 - Dino - standard XMPP client
 - Messangers (Telegram, Signal, Session)
-- Crypto Wallet (Electrum(Bitcoin), Electrum-ltc(Litecoin), ElectronCash(Bitcoin-cash), Monero-GUI, feather-wallet(monero))
+- Crypto Wallet (Electrum(Bitcoin), Electrum-ltc(Litecoin), ElectronCash(Bitcoin-cash), Monero-GUI, MyMonero(monero))
 - VeraCrypt - storage encrypting utility
 - And more...
 
